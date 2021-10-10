@@ -4,23 +4,30 @@ using UnityEngine;
 
 public class Actor : MonoBehaviour
 {
-    private Cardinal facing;
-    private Vector2Int gridPosition;
+    protected GameGrid gameGrid;
+    protected GameGrid.Cardinal facing;
+    protected Vector2Int gridPosition;
+    
+    [SerializeField]
     private bool isMovable;
-    private GameObject actorObject;
 
-    public enum Cardinal
-    { 
-        LEFT,
-        RIGHT,
-        UP,
-        DOWN
+    public virtual void Update()
+    {
+        
     }
 
-    public Actor(Vector2Int gridPosition, Cardinal facing, bool isMovable)
+    public void SetGameGrid(GameGrid gameGrid)
+    {
+        this.gameGrid = gameGrid;
+    }
+
+    public void SetFacing(GameGrid.Cardinal facing)
+    {
+        this.facing = facing;
+    }
+
+    public void SetGridPosition(Vector2Int gridPosition)
     {
         this.gridPosition = gridPosition;
-        this.facing = facing;
-        this.isMovable = isMovable;
     }
 }

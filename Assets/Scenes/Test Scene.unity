@@ -200,17 +200,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 4.5, y: -4.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &601279600 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6833327029711641722, guid: ba4a333c2b86a264ebb8bd0f4f59dcda, type: 3}
-  m_PrefabInstance: {fileID: 9128226231735235583}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1024167246
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,9 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4dafd0acd4408541bd5e77d66149bb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 20
-  height: 10
-  prefabLibrary: {fileID: 601279600}
+  levelLayout: {fileID: 4900000, guid: 999db7dde28ed6c4795e47a0be7f08fc, type: 3}
 --- !u!4 &1213610739
 Transform:
   m_ObjectHideFlags: 0
@@ -340,7 +333,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6833327029711641722, guid: ba4a333c2b86a264ebb8bd0f4f59dcda, type: 3}
       propertyPath: m_Name
-      value: Prefab Library
+      value: Actor Library
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba4a333c2b86a264ebb8bd0f4f59dcda, type: 3}
