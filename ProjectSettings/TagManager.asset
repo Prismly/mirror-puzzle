@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 3305479585
+    locked: 0
+  - name: Unmoveable
+    uniqueID: 624565553
+    locked: 0
+  - name: Moveable
+    uniqueID: 100502939
+    locked: 0
