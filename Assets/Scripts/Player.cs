@@ -13,19 +13,19 @@ public class Player : Actor
     {
         if(Input.GetKeyDown(leftMovement))
         {
-            gameGrid.MoveActor(gridPosition, GameGrid.Cardinal.LEFT);
+            gameGrid.MoveActor(gridPosition, GameGrid.Cardinal.LEFT, false);
         }
         if(Input.GetKeyDown(rightMovement))
         {
-            gameGrid.MoveActor(gridPosition, GameGrid.Cardinal.RIGHT);
+            gameGrid.MoveActor(gridPosition, GameGrid.Cardinal.RIGHT, false);
         }
         if(Input.GetKeyDown(upMovement))
         {
-            gameGrid.MoveActor(gridPosition, GameGrid.Cardinal.UP);
+            gameGrid.MoveActor(gridPosition, GameGrid.Cardinal.UP, false);
         }
         if(Input.GetKeyDown(downMovement))
         {
-            gameGrid.MoveActor(gridPosition, GameGrid.Cardinal.DOWN);
+            gameGrid.MoveActor(gridPosition, GameGrid.Cardinal.DOWN, false);
         }
     }
 

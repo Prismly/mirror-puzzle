@@ -30,4 +30,9 @@ public class Actor : MonoBehaviour
     {
         this.gridPosition = gridPosition;
     }
+
+    public bool GetIsMoveable()
+    {
+        return isMovable;
+    }
 }
