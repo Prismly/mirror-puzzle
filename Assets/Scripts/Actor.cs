@@ -7,6 +7,11 @@ public class Actor : MonoBehaviour
     protected GameGrid gameGrid;
     protected GameGrid.Cardinal facing;
     protected Vector2Int gridPosition;
+
+    protected Sprite leftSprite;
+    protected Sprite rightSprite;
+    protected Sprite upSprite;
+    protected Sprite downSprite;
     
     [SerializeField]
     private bool isMovable;
