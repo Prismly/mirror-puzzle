@@ -95,5 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b664398991a9ed42957169ff1a99890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftSprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
+  rightSprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
+  upSprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
+  downSprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
   isMovable: 0
-  actorObject: {fileID: 0}

@@ -7,6 +7,15 @@ public class Actor : MonoBehaviour
     protected GameGrid gameGrid;
     protected GameGrid.Cardinal facing;
     protected Vector2Int gridPosition;
+
+    [SerializeField]
+    protected Sprite leftSprite;
+    [SerializeField]
+    protected Sprite rightSprite;
+    [SerializeField]
+    protected Sprite upSprite;
+    [SerializeField]
+    protected Sprite downSprite;
     
     [SerializeField]
     private bool isMovable;
@@ -29,5 +38,17 @@ public class Actor : MonoBehaviour
     public void SetGridPosition(Vector2Int gridPosition)
     {
         this.gridPosition = gridPosition;
+    }
+
+    public bool GetIsMoveable()
+    {
+        return isMovable;
+    }
+
+    public void UpdateActorInfo(Vector2Int newPos, GameObject newContainer)
+    {
+        gridPosition = newPos;
+        gameObject.transform.parent = newContainer.transform;
+        gameObject.transform.position = new Vector3(gridPosition.x, -gridPosition.y);
     }
 }
