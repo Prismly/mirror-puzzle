@@ -68,7 +68,6 @@ public class GameGrid : MonoBehaviour
         {
             actor = Instantiate(actorPrefab);
             Actor actorController = actor.GetComponent<Actor>();
-            actorController.SetGameGrid(this);
             actorController.SetFacing((Cardinal)dirId);
             actorController.SetGridPosition(pos);
         }
@@ -134,7 +133,7 @@ public class GameGrid : MonoBehaviour
      *  @param dir - the direction in which to move the actor
      *  @return whether the actor was able to move into the next space.
      */
-    public bool MoveActor(Vector2Int startPos, Cardinal dir, bool pushing)
+    public bool MoveActorInGrid(Vector2Int startPos, Cardinal dir, bool pushing)
     {
         Vector2Int endPos = startPos + CardinalToTransform(dir);
         GridSquare startSquare = GetGridSquare(startPos);
@@ -152,7 +151,7 @@ public class GameGrid : MonoBehaviour
             else if(endSquare.GetOccupant().GetComponent<Actor>().GetIsMoveable() && !pushing)
             {
                 //There is something in the way, if it is pushable and isn't already being pushed by a non-player, perform all these checks again on the new position.
-                if(MoveActor(endPos, dir, true))
+                if(MoveActorInGrid(endPos, dir, true))
                 {
                     //We successfully pushed the object in front of us, thus we are clear to move too
                     endSquare.SwapOccupants(startSquare);
