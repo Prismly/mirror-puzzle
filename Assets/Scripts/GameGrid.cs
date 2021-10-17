@@ -70,6 +70,7 @@ public class GameGrid : MonoBehaviour
             Actor actorController = actor.GetComponent<Actor>();
             actorController.SetFacing((Cardinal)dirId);
             actorController.SetGridPosition(pos);
+            actorController.SetGameGrid(this);
         }
 
         gridArray[pos.y, pos.x] = new GridSquare(gridSquarePrefab, pos, actor);
@@ -86,6 +87,7 @@ public class GameGrid : MonoBehaviour
         private GameObject container;
         private GameObject occupant;
 
+        //TODO: Change 'occupant' to 'occupants' and make it a list? Less efficient but will allow for many layers including blocks, laser I/O, lasers (maybe) and buttons
         public GridSquare(GameObject gridSquarePrefab, Vector2Int gridPositionIn, GameObject occupantIn)
         {
             gridPosition = gridPositionIn;
@@ -142,7 +144,7 @@ public class GameGrid : MonoBehaviour
         //If there is an actor in the starting position to move...
         if(startSquare.GetOccupant() != null)
         {
-            if(endSquare.GetOccupant() == null)
+            if(endSquare.GetOccupant() == null || !endSquare.GetOccupant().GetComponent<Actor>().GetIsSolid())
             {
                 //There is nothing in the way, this actor is free to move into that spot.
                 endSquare.SwapOccupants(startSquare);

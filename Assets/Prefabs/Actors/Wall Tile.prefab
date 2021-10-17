@@ -100,3 +100,4 @@ MonoBehaviour:
   upSprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
   downSprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
   isMovable: 0
+  isSolid: 1

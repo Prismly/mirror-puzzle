@@ -19,6 +19,8 @@ public class Actor : MonoBehaviour
     
     [SerializeField]
     private bool isMovable;
+    [SerializeField]
+    private bool isSolid;
 
     public virtual void Update()
     {
@@ -43,6 +45,11 @@ public class Actor : MonoBehaviour
     public bool GetIsMoveable()
     {
         return isMovable;
+    }
+
+    public bool GetIsSolid()
+    {
+        return isSolid;
     }
 
     public void UpdateActorInfo(Vector2Int newPos, GameObject newContainer)
