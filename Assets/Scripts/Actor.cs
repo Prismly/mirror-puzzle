@@ -42,7 +42,7 @@ public class Actor : MonoBehaviour
         this.gridPosition = gridPosition;
     }
 
-    public bool GetIsMoveable()
+    public bool GetIsMovable()
     {
         return isMovable;
     }
@@ -52,10 +52,9 @@ public class Actor : MonoBehaviour
         return isSolid;
     }
 
-    public void UpdateActorInfo(Vector2Int newPos, GameObject newContainer)
+    public void UpdateActorPos(Vector2Int newPos)
     {
         gridPosition = newPos;
-        gameObject.transform.parent = newContainer.transform;
         gameObject.transform.position = new Vector3(gridPosition.x, -gridPosition.y);
     }
 }
