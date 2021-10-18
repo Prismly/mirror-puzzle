@@ -21,17 +21,12 @@ public class GameGrid : MonoBehaviour
     private GameObject wallPrefab;
     private GameObject wallContainer;
 
-    /**
-     *  Refers to each of the cardinal directions, for use when directing Actors to move on the grid,
-     *  as well as specifying which way each faces.
-     */
-    public enum Cardinal
-    {
-        LEFT = 'L',
-        RIGHT = 'R',
-        UP = 'U',
-        DOWN = 'D'
-    }
+    [SerializeField]
+    private GameObject laserOutPrefab;
+    private List<GameObject> laserOuts = new List<GameObject>();
+
+    private float colliderReductionOffset = 0.1f;
+    private bool initialLaserUpdate = false;
 
     /**
      *  Runs on scene startup, responsible for initializing the gridArray and populating it
@@ -42,14 +37,23 @@ public class GameGrid : MonoBehaviour
         GenerateLevelObjects();
     }
 
+    public void Update()
+    {
+        if(!initialLaserUpdate)
+        {
+            UpdateLasers();
+            initialLaserUpdate = true;
+        }
+    }
+
     private void GenerateLevelObjects()
     {
         groundContainer = new GameObject("Ground Tiles");
         wallContainer = new GameObject("Wall Tiles");
 
         //First row is processed separately in order to initialize gridArray with the corrent amount of columns.
-        string[] layoutByRow = levelLayout.text.Split(':');
-        string[] layoutByCol = layoutByRow[0].Split('-');
+        string[] layoutByRow = levelLayout.text.Split(rowDelim);
+        string[] layoutByCol = layoutByRow[0].Split(colDelim);
         gridArray = new GridSquare[layoutByRow.Length, layoutByCol.Length];
         for (int x = 0; x < gridArray.GetLength(1); x++)
         {
@@ -58,7 +62,7 @@ public class GameGrid : MonoBehaviour
 
         for (int y = 1; y < gridArray.GetLength(0); y++)
         {
-            layoutByCol = layoutByRow[y].Split('-');
+            layoutByCol = layoutByRow[y].Split(colDelim);
 
             for (int x = 0; x < gridArray.GetLength(1); x++)
             {
@@ -93,19 +97,27 @@ public class GameGrid : MonoBehaviour
         {
             GameObject actorPrefab = ActorLibrary.GetPrefab(prefabIds[i]);
             
-            if (actorPrefab != null)
+            if(actorPrefab != null)
             {
                 GameObject actor = Instantiate(actorPrefab);
                 Actor actorController = actor.GetComponent<Actor>();
-                actorController.SetFacing((Cardinal) dirIds[i]);
+                actorController.SetFacing(dirIds[i]);
                 actorController.SetGridPosition(pos);
                 actorController.SetGameGrid(this);
+
+                //Reduces the default size of the new actor's box collider by a constant factor to avoid collisions when two objects are adjacent.
+                actor.GetComponent<BoxCollider2D>().size = new Vector2(actor.GetComponent<BoxCollider2D>().size.x - colliderReductionOffset, 
+                    actor.GetComponent<BoxCollider2D>().size.y - colliderReductionOffset);
 
                 //Sets this actor as the child of a gameobject called "Wall Tiles" if it was created using the wall prefab.
                 //This is exclusively to make the object hierarchy more readable while testing.
                 if(actorPrefab == wallPrefab)
                 {
                     actor.transform.parent = wallContainer.transform;
+                }
+                else if(actorPrefab == laserOutPrefab)
+                {
+                    laserOuts.Add(actor);
                 }
 
                 occupants.Add(actor);
@@ -166,7 +178,7 @@ public class GameGrid : MonoBehaviour
         {
             for(int i = 0; i < occupants.Count; i++)
             {
-                if (occupants[i].GetComponent<Actor>().GetIsSolid())
+                if (occupants[i].GetComponent<Actor>().GetIsWall())
                 {
                     return i;
                 }
@@ -197,9 +209,11 @@ public class GameGrid : MonoBehaviour
      *  @param dir - the direction in which to move the actor
      *  @return whether the actor was able to move into the next space.
      */
-    public bool MoveActorInGrid(Vector2Int startPos, Cardinal dir, bool pushing)
+    public bool MoveActorInGrid(Vector2Int startPos, Vector2Int dir, bool pushing)
     {
-        Vector2Int endPos = startPos + CardinalToTransform(dir);
+        Vector2Int dirOffset = dir;
+        dirOffset.y = -dirOffset.y;
+        Vector2Int endPos = startPos + dirOffset;
         GridSquare startSquare = GetGridSquare(startPos);
         GridSquare endSquare = GetGridSquare(endPos);
         
@@ -246,37 +260,16 @@ public class GameGrid : MonoBehaviour
         return null;
     }
 
-    /**
-     *  Converts a Cardinal direction enum value into a Vector2Int with the corresponding directions.
-     *  e.g. Cardinal.LEFT results in Vector2Int(-1, 0) because it points one unit LEFT of the origin.
-     */
-    private Vector2Int CardinalToTransform(Cardinal dir)
+    public float GetColliderReductionOffset()
     {
-        switch (dir)
+        return colliderReductionOffset;
+    }
+
+    public void UpdateLasers()
+    {
+        foreach(GameObject o in laserOuts)
         {
-            case Cardinal.LEFT:
-                {
-                    return new Vector2Int(-1, 0);
-                }
-            case Cardinal.RIGHT:
-                {
-                    return new Vector2Int(1, 0);
-                }
-            case Cardinal.UP:
-                {
-                    //Flipped because GameObjects are drawn with position (x, -y)
-                    return new Vector2Int(0, -1);
-                }
-            case Cardinal.DOWN:
-                {
-                    //Flipped because GameObjects are drawn with position (x, -y)
-                    return new Vector2Int(0, 1);
-                }
-            default:
-                {
-                    Debug.LogError("Invalid Cardinal direction was passed to CardinalToTransform.");
-                    return new Vector2Int(int.MaxValue, int.MaxValue);
-                }
+            o.GetComponent<LaserOut>().UpdateLasers();
         }
     }
 }

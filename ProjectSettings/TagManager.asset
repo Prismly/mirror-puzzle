@@ -44,9 +44,18 @@ TagManager:
   - name: Ground
     uniqueID: 3305479585
     locked: 0
-  - name: Unmoveable
+  - name: Wall
     uniqueID: 624565553
     locked: 0
-  - name: Moveable
+  - name: Laser
+    uniqueID: 1184645311
+    locked: 0
+  - name: Mirror
     uniqueID: 100502939
+    locked: 0
+  - name: Laser IO
+    uniqueID: 823778977
+    locked: 0
+  - name: Player
+    uniqueID: 1660235013
     locked: 0

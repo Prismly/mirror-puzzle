@@ -5,7 +5,7 @@ using UnityEngine;
 public class Actor : MonoBehaviour
 {
     protected GameGrid gameGrid;
-    protected GameGrid.Cardinal facing;
+    protected Vector2Int facing;
     protected Vector2Int gridPosition;
 
     [SerializeField]
@@ -20,11 +20,38 @@ public class Actor : MonoBehaviour
     [SerializeField]
     private bool isMovable;
     [SerializeField]
-    private bool isSolid;
+    private bool isWall;
+    [SerializeField]
+    private bool isDeath;
 
-    public virtual void Update()
+    public void Start()
     {
-        
+        if (facing.x == 0)
+        {
+            if (facing.y > 0)
+            {
+                //UP
+                gameObject.GetComponent<SpriteRenderer>().sprite = upSprite;
+            }
+            else
+            {
+                //DOWN
+                gameObject.GetComponent<SpriteRenderer>().sprite = downSprite;
+            }
+        }
+        else
+        {
+            if(facing.x > 0)
+            {
+                //RIGHT
+                gameObject.GetComponent<SpriteRenderer>().sprite = rightSprite;
+            }
+            else
+            {
+                //LEFT
+                gameObject.GetComponent<SpriteRenderer>().sprite = leftSprite;
+            }
+        }
     }
 
     public void SetGameGrid(GameGrid gameGrid)
@@ -32,9 +59,41 @@ public class Actor : MonoBehaviour
         this.gameGrid = gameGrid;
     }
 
-    public void SetFacing(GameGrid.Cardinal facing)
+    public Vector2Int GetFacing()
     {
-        this.facing = facing;
+        return facing;
+    }
+
+    public void SetFacing(char dirId)
+    {
+        switch(dirId)
+        {
+            case 'L':
+                {
+                    facing = Vector2Int.left;
+                    break;
+                }
+            case 'R':
+                {
+                    facing = Vector2Int.right;
+                    break;
+                }
+            case 'U':
+                {
+                    facing = Vector2Int.up;
+                    break;
+                }
+            case 'D':
+                {
+                    facing = Vector2Int.down;
+                    break;
+                }
+        }
+    }
+
+    public Vector2Int GetGridPosition()
+    {
+        return gridPosition;
     }
 
     public void SetGridPosition(Vector2Int gridPosition)
@@ -47,9 +106,14 @@ public class Actor : MonoBehaviour
         return isMovable;
     }
 
-    public bool GetIsSolid()
+    public bool GetIsWall()
     {
-        return isSolid;
+        return isWall;
+    }
+
+    public bool GetIsDeath()
+    {
+        return isDeath;
     }
 
     public void UpdateActorPos(Vector2Int newPos)
