@@ -37,14 +37,14 @@ public class GameGrid : MonoBehaviour
         GenerateLevelObjects();
     }
 
-    public void Update()
-    {
-        if(!initialLaserUpdate)
-        {
-            UpdateLasers();
-            initialLaserUpdate = true;
-        }
-    }
+    //public void Update()
+    //{
+    //    if(!initialLaserUpdate)
+    //    {
+    //        UpdateLasers();
+    //        initialLaserUpdate = true;
+    //    }
+    //}
 
     private void GenerateLevelObjects()
     {
@@ -265,11 +265,11 @@ public class GameGrid : MonoBehaviour
         return colliderReductionOffset;
     }
 
-    public void UpdateLasers()
-    {
-        foreach(GameObject o in laserOuts)
-        {
-            o.GetComponent<LaserOut>().UpdateLasers();
-        }
-    }
+    //public void UpdateLasers()
+    //{
+    //    foreach(GameObject o in laserOuts)
+    //    {
+    //        o.GetComponent<LaserOut>().UpdateLasers();
+    //    }
+    //}
 }

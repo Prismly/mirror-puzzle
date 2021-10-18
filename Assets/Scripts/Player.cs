@@ -21,28 +21,24 @@ public class Player : Actor
             gameObject.GetComponent<SpriteRenderer>().sprite = leftSprite;
             base.SetFacing('L');
             gameGrid.MoveActorInGrid(gridPosition, Vector2Int.left, false);
-            gameGrid.UpdateLasers();
         }
         if (Input.GetKeyDown(rightMovement))
         {
             gameObject.GetComponent<SpriteRenderer>().sprite = rightSprite;
             base.SetFacing('R');
             gameGrid.MoveActorInGrid(gridPosition, Vector2Int.right, false);
-            gameGrid.UpdateLasers();
         }
         if (Input.GetKeyDown(upMovement))
         {
             gameObject.GetComponent<SpriteRenderer>().sprite = upSprite;
             base.SetFacing('U');
             gameGrid.MoveActorInGrid(gridPosition, Vector2Int.up, false);
-            gameGrid.UpdateLasers();
         }
         if (Input.GetKeyDown(downMovement))
         {
             gameObject.GetComponent<SpriteRenderer>().sprite = downSprite;
             base.SetFacing('D');
             gameGrid.MoveActorInGrid(gridPosition, Vector2Int.down, false);
-            gameGrid.UpdateLasers();
         }
     }
 }

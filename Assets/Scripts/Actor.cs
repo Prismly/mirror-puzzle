@@ -120,5 +120,6 @@ public class Actor : MonoBehaviour
     {
         gridPosition = newPos;
         gameObject.transform.position = new Vector3(gridPosition.x, -gridPosition.y);
+        Physics.SyncTransforms();
     }
 }

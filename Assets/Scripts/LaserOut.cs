@@ -13,7 +13,12 @@ public class LaserOut : Actor
     [SerializeField]
     private Sprite laserHorizontal;
 
-    public void FireLaser(Vector2Int origin, Vector2 dir, bool ignoreStartingSquare)
+    public void FixedUpdate()
+    {
+        UpdateLasers();
+    }
+
+    private void FireLaser(Vector2Int origin, Vector2 dir, bool ignoreStartingSquare)
     {
         RaycastHit2D[] hits = Physics2D.RaycastAll(origin, dir);
         int hitsIndex = 0;
