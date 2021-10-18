@@ -24,35 +24,6 @@ public class Actor : MonoBehaviour
     [SerializeField]
     private bool isDeath;
 
-    public void Start()
-    {
-        if (facing.x == 0)
-        {
-            if (facing.y > 0)
-            {
-                //UP
-                gameObject.GetComponent<SpriteRenderer>().sprite = upSprite;
-            }
-            else
-            {
-                //DOWN
-                gameObject.GetComponent<SpriteRenderer>().sprite = downSprite;
-            }
-        }
-        else
-        {
-            if(facing.x > 0)
-            {
-                //RIGHT
-                gameObject.GetComponent<SpriteRenderer>().sprite = rightSprite;
-            }
-            else
-            {
-                //LEFT
-                gameObject.GetComponent<SpriteRenderer>().sprite = leftSprite;
-            }
-        }
-    }
 
     public void SetGameGrid(GameGrid gameGrid)
     {
@@ -64,28 +35,32 @@ public class Actor : MonoBehaviour
         return facing;
     }
 
-    public void SetFacing(char dirId)
+    public virtual void SetFacing(char dirId)
     {
         switch(dirId)
         {
             case 'L':
                 {
                     facing = Vector2Int.left;
+                    gameObject.GetComponent<SpriteRenderer>().sprite = leftSprite;
                     break;
                 }
             case 'R':
                 {
                     facing = Vector2Int.right;
+                    gameObject.GetComponent<SpriteRenderer>().sprite = rightSprite;
                     break;
                 }
             case 'U':
                 {
                     facing = Vector2Int.up;
+                    gameObject.GetComponent<SpriteRenderer>().sprite = upSprite;
                     break;
                 }
             case 'D':
                 {
                     facing = Vector2Int.down;
+                    gameObject.GetComponent<SpriteRenderer>().sprite = downSprite;
                     break;
                 }
         }

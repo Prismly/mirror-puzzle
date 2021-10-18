@@ -94,13 +94,33 @@ public class LaserOut : Actor
                 //...fire the laser again, this time starting from the mirror and in the new direction.
                 FireLaser(newOrigin, redirectionDir, true);
             }
+            else
+            {
+                //If something stopped the laser in its tracks, check for a laser input object to turn on.
+
+                List<GameObject> collidedOccupants = gameGrid.GetGridSquareOccupants(hit.collider.gameObject.GetComponent<Actor>().GetGridPosition());
+                for(int i = 0; i < collidedOccupants.Count; i++)
+                {
+                    LaserIn laserInComponent = collidedOccupants[i].GetComponent<LaserIn>();
+
+                    if (laserInComponent != null)
+                    {
+                        //If this occupant of the tile we've collided with is a laser input...
+                        Vector2Int inputDir = new Vector2Int(-laserInComponent.GetFacing().x, -laserInComponent.GetFacing().y);
+                        if(dir.Equals(inputDir))
+                        {
+                            laserInComponent.SetIsLit(true);
+                        }
+                    }
+                }
+            }
         }
     }
 
     /**
      *  Given the direction from which a laser has collided with a mirror, returns the direction it will bounce.
      *  Mirrors can redirect lasers if they collide on one of two adjacent edges, specified by the mirror's "facing" field.
-     *  The two edges that will result in a redirection are the one in the "facing" field, and the one 90 dgerees clockwise from it.
+     *  The two edges that will result in a redirection are the one in the "facing" field, and the one 90 degrees clockwise from it.
      */
     private Vector2 RotateWithMirror(GameObject mirror, Vector2 laserDir)
     {

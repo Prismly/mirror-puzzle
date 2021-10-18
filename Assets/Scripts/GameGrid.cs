@@ -26,7 +26,6 @@ public class GameGrid : MonoBehaviour
     private List<GameObject> laserOuts = new List<GameObject>();
 
     private float colliderReductionOffset = 0.1f;
-    private bool initialLaserUpdate = false;
 
     /**
      *  Runs on scene startup, responsible for initializing the gridArray and populating it
@@ -186,6 +185,11 @@ public class GameGrid : MonoBehaviour
             return -1;
         }
 
+        public List<GameObject> GetOccupants()
+        {
+            return occupants;
+        }
+
         public void AddOccupant(GameObject newOccupant)
         {
             occupants.Add(newOccupant);
@@ -258,6 +262,11 @@ public class GameGrid : MonoBehaviour
             return gridArray[targetPos.y, targetPos.x];
         }
         return null;
+    }
+
+    public List<GameObject> GetGridSquareOccupants(Vector2Int targetPos)
+    {
+        return GetGridSquare(targetPos).GetOccupants();
     }
 
     public float GetColliderReductionOffset()
