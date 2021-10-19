@@ -69,7 +69,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: Hierarchy
   m_RootView: {fileID: 8}
-  m_MinSize: {x: 875, y: 300}
+  m_MinSize: {x: 875, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 1
 --- !u!114 &4
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 221}
   m_MaxSize: {x: 4000, y: 4021}
   vertical: 0
-  controlID: 22725
+  controlID: 57
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -141,8 +141,8 @@ MonoBehaviour:
     y: 0
     width: 647
     height: 947
-  m_MinSize: {x: 240, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 240, y: 221}
+  m_MaxSize: {x: 4000, y: 4021}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -171,7 +171,7 @@ MonoBehaviour:
   m_MinSize: {x: 240, y: 221}
   m_MaxSize: {x: 4000, y: 4021}
   vertical: 0
-  controlID: 15936
+  controlID: 23
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -194,7 +194,7 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 997
-  m_MinSize: {x: 875, y: 300}
+  m_MinSize: {x: 875, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
   m_UseTopView: 1
   m_TopViewHeight: 30
@@ -267,10 +267,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 947
-  m_MinSize: {x: 678, y: 492}
-  m_MaxSize: {x: 14001, y: 14042}
+  m_MinSize: {x: 679, y: 492}
+  m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
-  controlID: 21821
+  controlID: 169
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -295,7 +295,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 21822
+  controlID: 170
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -320,7 +320,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 21823
+  controlID: 171
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -421,8 +421,8 @@ MonoBehaviour:
     y: 0
     width: 648
     height: 947
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 26}
   m_Panes:
   - {fileID: 26}
@@ -578,9 +578,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 1c7e0000
-      m_LastClickedID: 32284
-      m_ExpandedIDs: d883feff308bfeff7492feff58b4feff4ebbfeff42c3feff74e2feffae29ffff5a64ffff8667ffff1e7bffff548dffff748dffff3ec8ffff70c8ffffa6dfffffbadfffff80e5ffff9ae5ffff3af2ffff4ef6ffffe6f9ffff02faffff1cfafffffafaffff005b00000a5b0000185b0000325b0000087100001c7e0000
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: cafaffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -640,7 +640,7 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0.46560717, y: -0.24491264, z: -508.13156}
+    m_Target: {x: 6.230639, y: 5.3189363, z: -87.68905}
     speed: 2
     m_Value: {x: 0.46560717, y: -0.24491264, z: -508.13156}
   m_RenderMode: 0
@@ -693,7 +693,7 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 7.3677545
+    m_Target: 7.954477
     speed: 2
     m_Value: 7.3677545
   m_Ortho:
@@ -758,13 +758,13 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Editor
+    - Assets/Scripts
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts/Editor
+  - Assets/Scripts
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Prismly\Dropbox (Old)\My PC (Nerfel)\Desktop\Coding\Unity
     Projects\Mirror Puzzle
@@ -772,9 +772,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 67}
-    m_SelectedIDs: 525b0000
-    m_LastClickedID: 23378
-    m_ExpandedIDs: 000000000644000016440000184400003e480000604d0000e053000000ca9a3b
+    m_SelectedIDs: 88440000
+    m_LastClickedID: 17544
+    m_ExpandedIDs: 0000000086440000884400008a4400008c4400008e4400009044000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -802,7 +802,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000644000016440000184400003e480000604d0000e053000000ca9a3b
+    m_ExpandedIDs: 0000000086440000884400008a4400008c4400008e44000090440000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
