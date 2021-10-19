@@ -6,7 +6,7 @@ public class GameGrid : MonoBehaviour
 {
     /** The text file to read from when instantiating the grid and its objects. 
      * Contains all the information to build a level from prefabs. */
-    [SerializeField] private TextAsset levelLayout;
+    [SerializeField] private static TextAsset levelLayout;
     /** The delimiter to split rows up by in the levelLayout text file. */
     private static char rowDelim = ':';
     /** The delimiter to split columns up by in the levelLayout text file. */
@@ -454,5 +454,10 @@ public class GameGrid : MonoBehaviour
                     return '\0';
                 }
         }
+    }
+
+    public static void SetLayout(TextAsset layout)
+    {
+        levelLayout = layout;
     }
 }

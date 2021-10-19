@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 using System.IO;
 
 public class SceneTester : MonoBehaviour
 {
-    private TextAsset levelLayout;
-
     [SerializeField] Tilemap groundMap;
     [SerializeField] Tilemap wallMap;
     [SerializeField] Tilemap laserIOMap;
@@ -16,11 +15,14 @@ public class SceneTester : MonoBehaviour
     [SerializeField] Tilemap playerMap;
 
     private string levelFolder = "Assets/Levels/";
-    [SerializeField] string outgoingLevelName;
+    [SerializeField] private string outgoingLevelName;
+    [SerializeField] private string outgoingSceneName;
 
     void Start()
     {
         GenerateLevelLayout();
+
+        SceneManager.LoadScene(outgoingSceneName);
     }
 
     private void GenerateLevelLayout()
@@ -61,9 +63,13 @@ public class SceneTester : MonoBehaviour
     {
         string fullPath = levelFolder + outgoingLevelName + ".txt";
 
+        //Writes the text to a text file for long-term storage.
         StreamWriter writer = File.CreateText(fullPath);
         writer.Write(text);
         writer.Close();
+
+        //Writes the text to a TextAsset for short term storage, to "pass" to the gameplay scene.
+        GameGrid.SetLayout(new TextAsset(text));
     }
 
     private string GetParticipant(Tilemap source, Vector3Int targetPos)
