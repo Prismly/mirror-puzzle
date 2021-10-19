@@ -42,7 +42,8 @@ public class LaserOut : Actor
                     -hits[i].collider.gameObject.GetComponent<Actor>().GetGridPosition().y);
 
                 if (!currentHitPosition.Equals(origin) && 
-                    (hits[i].collider.gameObject.GetComponent<Actor>().GetIsStop() || hits[i].collider.gameObject.tag == "Mirror"))
+                    ((hits[i].collider.gameObject.GetComponent<Actor>() && hits[i].collider.gameObject.GetComponent<Actor>().GetIsStop()) || 
+                    hits[i].collider.gameObject.tag == "Mirror"))
                 {
                     hitsIndex = i;
                     break;
@@ -58,7 +59,8 @@ public class LaserOut : Actor
             //b) OR the thing we are colliding with is a mirror, which has a possibility of redirecting the laser.
             for (int i = 0; i < hits.Length; i++)
             {
-                if (hits[i].collider.gameObject.GetComponent<Actor>().GetIsStop() || hits[i].collider.gameObject.tag == "Mirror")
+                if ((hits[i].collider.gameObject.GetComponent<Actor>() && hits[i].collider.gameObject.GetComponent<Actor>().GetIsStop()) || 
+                    hits[i].collider.gameObject.tag == "Mirror")
                 {
                     hitsIndex = i;
                     break;
