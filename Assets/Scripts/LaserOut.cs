@@ -4,54 +4,78 @@ using UnityEngine;
 
 public class LaserOut : Actor
 {
-    [SerializeField]
-    private GameObject laserSegmentPrefab;
+    /** The prefab that can be used to instantiate a new laser segment object. */
+    [SerializeField] private GameObject laserSegmentPrefab;
+    /** A list of all laserSegments currently in existence that are associated with this laser output actor. */
     private List<GameObject> laserSegments = new List<GameObject>();
 
-    [SerializeField]
-    private Sprite laserVertical;
-    [SerializeField]
-    private Sprite laserHorizontal;
+    /** The sprite for a vertical laser segment. */
+    [SerializeField] private Sprite laserVertical;
+    /** The sprite for a horizontal laser segment. */
+    [SerializeField] private Sprite laserHorizontal;
 
-    public void FixedUpdate()
-    {
-        UpdateLasers();
-    }
-
+    /**
+     * "Fires" a laser from the specified origin point in the given direction, creating an object called a laser segment.
+     * Visually, the created laser segment should extend from the origin square to the first stopping actor OR the first mirror actor it encounters.
+     * If the laser extends to a mirror actor in the proper direction, it will be redirected, and this method will be recursively called with the
+     * mirror as the new origin.
+     * @param origin - the origin point of the raycast to use to generate a laser segment.
+     * @param dir - the direction in which to fire the laser.
+     * @param ignoreStartingSquare - whether or not to take into account colliders on the same GridSquare as origin.
+     */
     private void FireLaser(Vector2Int origin, Vector2 dir, bool ignoreStartingSquare)
     {
+        //Get all colliders in the direction of the laser.
         RaycastHit2D[] hits = Physics2D.RaycastAll(origin, dir);
         int hitsIndex = 0;
         if(ignoreStartingSquare)
         {
-            Vector2Int currentHitPosition = new Vector2Int(hits[hitsIndex].collider.gameObject.GetComponent<Actor>().GetGridPosition().x,
-                -hits[hitsIndex].collider.gameObject.GetComponent<Actor>().GetGridPosition().y);
+            //If the ignoreStartingSquare flag is set, specifically check all hits until one that both fits the requirements AND isn't on the same grid position as origin is found.
 
-            while (hitsIndex < hits.Length && currentHitPosition.Equals(origin) || 
-                (!hits[hitsIndex].collider.gameObject.GetComponent<Actor>().GetIsWall() && hits[hitsIndex].collider.gameObject.tag != "Mirror"))
+            //The current hit is a valid endpoint if...
+            //a) the thing we are colliding with is stopping, like a wall or a closed door. Anything the player cannot move through.
+            //b) OR the thing we are colliding with is a mirror, which has a possibility of redirecting the laser.
+            //c) (ignoreStartingSquare exclusive) regardless of the other two, its grid position must not match that of this laser's origin.
+            for(int i = 0; i < hits.Length; i++)
             {
-                hitsIndex++;
-                currentHitPosition = new Vector2Int(hits[hitsIndex].collider.gameObject.GetComponent<Actor>().GetGridPosition().x,
-                    -hits[hitsIndex].collider.gameObject.GetComponent<Actor>().GetGridPosition().y);
+                Vector2Int currentHitPosition = new Vector2Int(hits[i].collider.gameObject.GetComponent<Actor>().GetGridPosition().x,
+                    -hits[i].collider.gameObject.GetComponent<Actor>().GetGridPosition().y);
+
+                if (!currentHitPosition.Equals(origin) && 
+                    (hits[i].collider.gameObject.GetComponent<Actor>().GetIsStop() || hits[i].collider.gameObject.tag == "Mirror"))
+                {
+                    hitsIndex = i;
+                    break;
+                }
             }
         }
         else
         {
-            while(hitsIndex < hits.Length && !hits[hitsIndex].collider.gameObject.GetComponent<Actor>().GetIsWall() && hits[hitsIndex].collider.gameObject.tag != "Mirror")
+            //If the ignoreStartingSquare flag is not set, check all hits until one that fits both requirements is found, regardless of grid position.
+
+            //The current hit is a valid collision if...
+            //a) the thing we are colliding with is stopping, like a wall or a closed door. Anything the player cannot move through.
+            //b) OR the thing we are colliding with is a mirror, which has a possibility of redirecting the laser.
+            for (int i = 0; i < hits.Length; i++)
             {
-                hitsIndex++;
+                if (hits[i].collider.gameObject.GetComponent<Actor>().GetIsStop() || hits[i].collider.gameObject.tag == "Mirror")
+                {
+                    hitsIndex = i;
+                    break;
+                }
             }
         }
 
+        //If we found a suitable hit...
         if(hitsIndex < hits.Length)
         {
             RaycastHit2D hit = hits[hitsIndex];
-            Vector2 dirAbs = new Vector2(Mathf.Abs(dir.x), Mathf.Abs(dir.y));
 
-            //If a suitable collider was found, generate a laser object for this line.
+            //Generate a laser object for this line.
             GameObject newSegment = Instantiate(laserSegmentPrefab);
             newSegment.GetComponent<LaserSegment>().SetOutputTile(this);
 
+            Vector2 dirAbs = new Vector2(Mathf.Abs(dir.x), Mathf.Abs(dir.y));
             //Results in a vector that has a zero dimension and a non-zero dimension, representing the length of the laser.
             Vector2 size = dirAbs * (hit.distance + 0.5f - gameGrid.GetColliderReductionOffset());
             //Corrects for whichever dimension is of length 0, resulting in the correct size of the sprite and collider.
@@ -73,10 +97,6 @@ public class LaserOut : Actor
 
             Vector3 oldPos = new Vector3(origin.x, origin.y, 0);
             Vector3 offset = new Vector3(dir.x * ((hit.distance - 0.5f) / 2), dir.y * ((hit.distance - 0.5f) / 2), 0);
-
-            //Debug.Log("Offset: " + offset);
-            //Debug.Log("Dir: " + dir);
-            //Debug.Log("thing: " + (hit.distance - 0.5f) / 2);
 
             newSegment.transform.position = oldPos + offset;
 
@@ -118,9 +138,12 @@ public class LaserOut : Actor
     }
 
     /**
-     *  Given the direction from which a laser has collided with a mirror, returns the direction it will bounce.
-     *  Mirrors can redirect lasers if they collide on one of two adjacent edges, specified by the mirror's "facing" field.
-     *  The two edges that will result in a redirection are the one in the "facing" field, and the one 90 degrees clockwise from it.
+     * Given the direction from which a laser has collided with a mirror, returns the direction it will bounce.
+     * Mirrors can redirect lasers if they collide on one of two adjacent edges, specified by the mirror's "facing" field.
+     * The two edges that will result in a redirection are the one in the "facing" field, and the one 90 degrees clockwise from it.
+     * @param mirror - the mirror actor we want to rotate with.
+     * @param laserDir - the direction in which the current laser segment is traveling.
+     * @returns the direction in which the laser will be redirected; if it will not be redirected because it is hitting the wrong side, returns Vector2.zero.
      */
     private Vector2 RotateWithMirror(GameObject mirror, Vector2 laserDir)
     {
@@ -147,10 +170,13 @@ public class LaserOut : Actor
         }
         else
         {
-            return new Vector2(0, 0);
+            return Vector2.zero;
         }
     }
-
+    
+    /**
+     * Destroys all laserSegments associated with this laser output actor and fires a new laser to redraw the laser's path.
+     */
     public void UpdateLasers()
     {
         foreach (GameObject o in laserSegments)

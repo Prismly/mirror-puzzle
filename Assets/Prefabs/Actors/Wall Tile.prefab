@@ -50,8 +50,7 @@ MonoBehaviour:
   upSprite: {fileID: -6270962014418576911, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
   downSprite: {fileID: 5876339212448196843, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
   isMovable: 0
-  isWall: 1
-  isDeath: 0
+  isStop: 1
   spritesheet:
   - {fileID: 5855428363409323402, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
   - {fileID: 6317680137917448054, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
@@ -119,7 +118,7 @@ SpriteRenderer:
   m_SortingLayerID: 624565553
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
+  m_Sprite: {fileID: -5174086399456134548, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5253520965591275502}
+  - component: {fileID: 5253520965591275501}
   - component: {fileID: 5253520965591275503}
   - component: {fileID: 5253520965591275500}
-  - component: {fileID: 5253520965591275501}
   m_Layer: 0
   m_Name: Laser Input
   m_TagString: Untagged
@@ -33,6 +33,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5253520965591275501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5253520965591275506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56aff571f17b9e34490b295c6c772ea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 21300000, guid: 05ed5b348674318408acddb40438a004, type: 3}
+  rightSprite: {fileID: 21300000, guid: 069430f93aee06248a0e031613543f8e, type: 3}
+  upSprite: {fileID: 21300000, guid: 33bc2078291546844a3b134964f81af6, type: 3}
+  downSprite: {fileID: 21300000, guid: bfe51594dbac9a54faf586fbb8fc233f, type: 3}
+  isMovable: 0
+  isStop: 0
+  leftLitSprite: {fileID: 21300000, guid: cc3d822b82089b04381cde9772afd30e, type: 3}
+  rightLitSprite: {fileID: 21300000, guid: e2980909d3a07ec4dbe825fffffb0f83, type: 3}
+  upLitSprite: {fileID: 21300000, guid: ed44661d9d4a024489fe5ae6c8a7c789, type: 3}
+  downLitSprite: {fileID: 21300000, guid: 1d9493d31e0f6ca489661a8f6f4732e2, type: 3}
 --- !u!212 &5253520965591275503
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -110,26 +132,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &5253520965591275501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5253520965591275506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56aff571f17b9e34490b295c6c772ea8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftSprite: {fileID: 21300000, guid: 05ed5b348674318408acddb40438a004, type: 3}
-  rightSprite: {fileID: 21300000, guid: 069430f93aee06248a0e031613543f8e, type: 3}
-  upSprite: {fileID: 21300000, guid: 33bc2078291546844a3b134964f81af6, type: 3}
-  downSprite: {fileID: 21300000, guid: bfe51594dbac9a54faf586fbb8fc233f, type: 3}
-  isMovable: 0
-  isWall: 0
-  isDeath: 0
-  leftLitSprite: {fileID: 21300000, guid: cc3d822b82089b04381cde9772afd30e, type: 3}
-  rightLitSprite: {fileID: 21300000, guid: e2980909d3a07ec4dbe825fffffb0f83, type: 3}
-  upLitSprite: {fileID: 21300000, guid: ed44661d9d4a024489fe5ae6c8a7c789, type: 3}
-  downLitSprite: {fileID: 21300000, guid: 1d9493d31e0f6ca489661a8f6f4732e2, type: 3}

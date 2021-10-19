@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class Wall : Actor
 {
-    [SerializeField]
-    private Sprite[] spritesheet = new Sprite[30];
+    /** The spritesheet containing every variation of a wall. */
+    [SerializeField] private Sprite[] spritesheet = new Sprite[30];
 
+    /**
+     * Overrides the SetFacing function in Actor, but accomplishes the same purpose.
+     * Sets the value of the facing field for this Wall Actor, and sets the appropriate sprite from the
+     * spritesheet based on the character passed in from the level layout text file.
+     * @param wallSpriteId - the character read in from the level's text file, which specifies not the facing
+     * direction but instead which sprite from the spritesheet to use.
+     */
     public override void SetFacing(char wallSpriteId)
     {
         //The facing Vector is vestigial for walls, as they only face multiple directions cosmetically and will always be solid from every direction.
