@@ -192,4 +192,13 @@ public class LaserOut : Actor
 
         FireLaser(new Vector2Int(gridPosition.x, -gridPosition.y), facing, false);
     }
+
+    public override void SelfDestruct()
+    {
+        foreach (GameObject o in laserSegments)
+        {
+            Destroy(o);
+        }
+        base.SelfDestruct();
+    }
 }

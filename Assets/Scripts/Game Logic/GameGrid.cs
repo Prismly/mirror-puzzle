@@ -35,13 +35,15 @@ public class GameGrid : MonoBehaviour
     private bool boardStateChanged = false;
 
     /** A list of every laser output tile in the level, used for updating lasers from all sources on the grid. */
-    private List<GameObject> laserOuts = new List<GameObject>();
+    private List<GameObject> laserOuts;
     /** A list of every laser input tile in the level, used both to turn them off before every laser update 
      * and to check if they are all lit, in which case the level is complete. */
-    private List<GameObject> laserIns = new List<GameObject>();
+    private List<GameObject> laserIns;
 
     /** The factor by which to reduce each dimension of an Actor's BoxCollider2D, to reduce the amount of edge-to-edge collisions. */
     private float colliderReductionOffset = 0.1f;
+
+    private KeyCode reset = KeyCode.R;
 
     [SerializeField] Camera sceneCamera;
 
@@ -51,15 +53,22 @@ public class GameGrid : MonoBehaviour
      */
     public void Start()
     {
-        if(levelLayout == null)
-        {
-            levelLayout = defaultLevelLayout;
-        }
         GenerateLevelObjects();
         levelIsActive = true;
 
         sceneCamera.transform.position = new Vector3(((float)gridArray.GetLength(1) / 2) - 0.5f, -((float) gridArray.GetLength(0) / 2) + 0.5f, -10);
         sceneCamera.orthographicSize = gridArray.GetLength(0) * 0.5f;
+    }
+
+    public void Update()
+    {
+        if (levelIsActive)
+        {
+            if (Input.GetKeyDown(reset))
+            {
+                ResetLevel();
+            }
+        }
     }
 
     /**
@@ -89,8 +98,15 @@ public class GameGrid : MonoBehaviour
      */
     private void GenerateLevelObjects()
     {
+        if (levelLayout == null)
+        {
+            levelLayout = defaultLevelLayout;
+        }
+
         groundContainer = new GameObject("Ground Tiles");
         wallContainer = new GameObject("Wall Tiles");
+        laserIns = new List<GameObject>();
+        laserOuts = new List<GameObject>();
 
         //First row is processed separately in order to initialize gridArray with the corrent amount of columns.
         string[] layoutByRow = levelLayout.text.Split(rowDelim);
@@ -486,5 +502,26 @@ public class GameGrid : MonoBehaviour
     public Vector2Int GetGridArrayDims()
     {
         return new Vector2Int(gridArray.GetLength(1), gridArray.GetLength(0));
+    }
+
+    public void ResetLevel()
+    {
+        //Destroy all actors and lasers
+        for (int y = 0; y < gridArray.GetLength(0); y++)
+        {
+            for (int x = 0; x < gridArray.GetLength(1); x++)
+            {
+                foreach (GameObject o in gridArray[y, x].GetOccupants())
+                {
+                    if (o != null)
+                    {
+                        o.GetComponent<Actor>().SelfDestruct();
+                    }
+                }
+            }
+        }
+
+        GenerateLevelObjects();
+        startupStallFrame = true;
     }
 }

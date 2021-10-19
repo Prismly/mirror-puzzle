@@ -128,4 +128,9 @@ public class Actor : MonoBehaviour
         //This is why we flip the y coordinate; to flip the final image vertically
         gameObject.transform.position = new Vector3(gridPosition.x, -gridPosition.y);
     }
+
+    public virtual void SelfDestruct()
+    {
+        Destroy(gameObject);
+    }
 }
