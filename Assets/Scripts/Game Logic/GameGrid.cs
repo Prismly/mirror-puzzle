@@ -6,7 +6,8 @@ public class GameGrid : MonoBehaviour
 {
     /** The text file to read from when instantiating the grid and its objects. 
      * Contains all the information to build a level from prefabs. */
-    [SerializeField] private static TextAsset levelLayout;
+    private static TextAsset levelLayout;
+    [SerializeField] private TextAsset defaultLevelLayout;
     /** The delimiter to split rows up by in the levelLayout text file. */
     private static char rowDelim = ':';
     /** The delimiter to split columns up by in the levelLayout text file. */
@@ -16,6 +17,7 @@ public class GameGrid : MonoBehaviour
      * that do things in the game world. The actual data type is GridSquare, a private 
      * inner class that contains positional information as well as the occupying Actors. */
     private GridSquare[,] gridArray;
+    private bool levelIsActive;
 
     /** The prefab for a ground tile GameObject. One is generated on every GridSquare, 
      * so that even if things move, there's always at least terrain. */
@@ -41,13 +43,23 @@ public class GameGrid : MonoBehaviour
     /** The factor by which to reduce each dimension of an Actor's BoxCollider2D, to reduce the amount of edge-to-edge collisions. */
     private float colliderReductionOffset = 0.1f;
 
+    [SerializeField] Camera sceneCamera;
+
     /**
      * Runs on scene startup, responsible for initializing the gridArray and populating it
      * based on the levelLayout text file resource attached to this GameGrid GameObject.
      */
     public void Start()
     {
+        if(levelLayout == null)
+        {
+            levelLayout = defaultLevelLayout;
+        }
         GenerateLevelObjects();
+        levelIsActive = true;
+
+        sceneCamera.transform.position = new Vector3(((float)gridArray.GetLength(1) / 2) - 0.5f, -((float) gridArray.GetLength(0) / 2) + 0.5f, -10);
+        sceneCamera.orthographicSize = gridArray.GetLength(0) * 0.5f;
     }
 
     /**
@@ -459,5 +471,20 @@ public class GameGrid : MonoBehaviour
     public static void SetLayout(TextAsset layout)
     {
         levelLayout = layout;
+    }
+
+    public bool GetLevelIsActive()
+    {
+        return levelIsActive;
+    }
+
+    public void SetLevelIsActive(bool levelIsActiveIn)
+    {
+        levelIsActive = levelIsActiveIn;
+    }
+
+    public Vector2Int GetGridArrayDims()
+    {
+        return new Vector2Int(gridArray.GetLength(1), gridArray.GetLength(0));
     }
 }
