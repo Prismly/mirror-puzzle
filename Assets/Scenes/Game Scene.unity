@@ -258,7 +258,11 @@ PrefabInstance:
     - target: {fileID: 6238462936759224386, guid: 93851bb0ce9ceb545a5ca9c22645e2a1, type: 3}
       propertyPath: defaultLevelLayout
       value: 
+<<<<<<< Updated upstream
       objectReference: {fileID: 4900000, guid: 999db7dde28ed6c4795e47a0be7f08fc, type: 3}
+=======
+      objectReference: {fileID: 4900000, guid: e0ced88b79fa69a4e921c08f6241bd39, type: 3}
+>>>>>>> Stashed changes
     - target: {fileID: 6238462936759224386, guid: 93851bb0ce9ceb545a5ca9c22645e2a1, type: 3}
       propertyPath: colliderReductionOffset
       value: 0.1
