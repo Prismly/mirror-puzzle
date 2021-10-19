@@ -36,17 +36,19 @@ public class LaserOut : Actor
             //a) the thing we are colliding with is stopping, like a wall or a closed door. Anything the player cannot move through.
             //b) OR the thing we are colliding with is a mirror, which has a possibility of redirecting the laser.
             //c) (ignoreStartingSquare exclusive) regardless of the other two, its grid position must not match that of this laser's origin.
-            for(int i = 0; i < hits.Length; i++)
+            for (int i = 0; i < hits.Length; i++)
             {
-                Vector2Int currentHitPosition = new Vector2Int(hits[i].collider.gameObject.GetComponent<Actor>().GetGridPosition().x,
+                if (hits[i].collider.gameObject.GetComponent<Actor>())
+                {
+                    Vector2Int currentHitPosition = new Vector2Int(hits[i].collider.gameObject.GetComponent<Actor>().GetGridPosition().x,
                     -hits[i].collider.gameObject.GetComponent<Actor>().GetGridPosition().y);
 
-                if (!currentHitPosition.Equals(origin) && 
-                    ((hits[i].collider.gameObject.GetComponent<Actor>() && hits[i].collider.gameObject.GetComponent<Actor>().GetIsStop()) || 
-                    hits[i].collider.gameObject.tag == "Mirror"))
-                {
-                    hitsIndex = i;
-                    break;
+                    if (!currentHitPosition.Equals(origin) && (hits[i].collider.gameObject.GetComponent<Actor>().GetIsStop() ||
+                        hits[i].collider.gameObject.tag == "Mirror"))
+                    {
+                        hitsIndex = i;
+                        break;
+                    }
                 }
             }
         }
@@ -59,11 +61,13 @@ public class LaserOut : Actor
             //b) OR the thing we are colliding with is a mirror, which has a possibility of redirecting the laser.
             for (int i = 0; i < hits.Length; i++)
             {
-                if ((hits[i].collider.gameObject.GetComponent<Actor>() && hits[i].collider.gameObject.GetComponent<Actor>().GetIsStop()) || 
-                    hits[i].collider.gameObject.tag == "Mirror")
+                if (hits[i].collider.gameObject.GetComponent<Actor>())
                 {
-                    hitsIndex = i;
-                    break;
+                    if (hits[i].collider.gameObject.GetComponent<Actor>().GetIsStop() || hits[i].collider.gameObject.tag == "Mirror")
+                    {
+                        hitsIndex = i;
+                        break;
+                    }
                 }
             }
         }
