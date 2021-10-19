@@ -247,6 +247,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grid Controller
       objectReference: {fileID: 0}
+    - target: {fileID: 6238462936759224386, guid: 93851bb0ce9ceb545a5ca9c22645e2a1, type: 3}
+      propertyPath: colliderReductionOffset
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 6238462936759224387, guid: 93851bb0ce9ceb545a5ca9c22645e2a1, type: 3}
       propertyPath: m_RootOrder
       value: 2

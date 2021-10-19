@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8862259396053142913}
+  - component: {fileID: 7901818852672928554}
   - component: {fileID: 4898704955824882635}
-  - component: {fileID: 142318587064677753}
+  - component: {fileID: 8827787365563949887}
   m_Layer: 0
   m_Name: Wall Tile
   m_TagString: Untagged
@@ -32,6 +33,51 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7901818852672928554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443757455325135734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d9b229a5d4825d4bbc1ef01d318321f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 1931772509911548677, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  rightSprite: {fileID: -3443622594858441572, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  upSprite: {fileID: -6270962014418576911, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  downSprite: {fileID: 5876339212448196843, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  isMovable: 0
+  isStop: 1
+  spritesheet:
+  - {fileID: 5855428363409323402, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: 6317680137917448054, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -6600623123634258011, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -957605500721476481, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -8212303455071910830, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: 5223758104366878889, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: 2080153146191481567, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -5627557376452343071, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -6626668105143809841, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -5720138190733859019, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -2920274274816259492, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: 961200068694884519, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -4044632506945732578, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: 1986980902278948149, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -1319833315775219208, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -31013874096536020, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -3847835890371433417, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -5247198443953808721, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: 7994080758266125213, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: 7012140696236950758, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: 8472120355807004806, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: 4585732014309010358, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: 4476380319577306519, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -4843860979845313093, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: 8241187546543548803, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
+  - {fileID: -5174086399456134548, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
 --- !u!212 &4898704955824882635
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -72,7 +118,7 @@ SpriteRenderer:
   m_SortingLayerID: 624565553
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
+  m_Sprite: {fileID: -5174086399456134548, guid: da00c6318d254bd478a67a098e35e9a8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -83,20 +129,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &142318587064677753
-MonoBehaviour:
+--- !u!61 &8827787365563949887
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1443757455325135734}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b664398991a9ed42957169ff1a99890, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftSprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
-  rightSprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
-  upSprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
-  downSprite: {fileID: 21300000, guid: 5ba53639818cd1345baf6b1e7ba8b345, type: 3}
-  isMovable: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0

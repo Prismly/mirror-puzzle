@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2720573458958221542}
+  - component: {fileID: 8210696512318855636}
   - component: {fileID: 7996484907703137249}
   m_Layer: 0
   m_Name: Ground Tile
@@ -31,6 +32,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8210696512318855636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2720573458958221541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b664398991a9ed42957169ff1a99890, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftSprite: {fileID: 21300000, guid: a1499e5ce04299544883f6c91779380c, type: 3}
+  rightSprite: {fileID: 21300000, guid: a1499e5ce04299544883f6c91779380c, type: 3}
+  upSprite: {fileID: 21300000, guid: a1499e5ce04299544883f6c91779380c, type: 3}
+  downSprite: {fileID: 21300000, guid: a1499e5ce04299544883f6c91779380c, type: 3}
+  isMovable: 0
+  isStop: 0
 --- !u!212 &7996484907703137249
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -44,4 +44,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelLayout: {fileID: 4900000, guid: 999db7dde28ed6c4795e47a0be7f08fc, type: 3}
-  gridSquarePrefab: {fileID: 541978374504222343, guid: ee9827d2cc211394489b973b92d6b5e6, type: 3}
+  groundPrefab: {fileID: 2720573458958221541, guid: e04f253240b5d864da55df539f8d4db0, type: 3}
+  wallPrefab: {fileID: 1443757455325135734, guid: eb21d6cca0899a54e9e69762eca8b735, type: 3}
+  laserOutPrefab: {fileID: 5535234073147091142, guid: 4767ec45cb1e13c41be635ba261db48b, type: 3}
