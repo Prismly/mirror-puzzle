@@ -18,6 +18,8 @@ public class SceneTester : MonoBehaviour
     [SerializeField] private string outgoingLevelName;
     [SerializeField] private string outgoingSceneName;
 
+    [SerializeField] private Vector2Int levelDims;
+
     void Start()
     {
         GenerateLevelLayout();
@@ -29,14 +31,9 @@ public class SceneTester : MonoBehaviour
     {
         string layout = "";
 
-        Vector3Int levelDims = groundMap.size;
-        int rightBound = levelDims.x / 2;
-        int leftBound = -rightBound;
-        int upBound = levelDims.y / 2;
-        int downBound = -upBound;
-        for (int y = upBound - 1; y >= downBound; y--)
+        for (int y = levelDims.y - 1; y >= 0; y--)
         {
-            for (int x = leftBound; x < rightBound; x++)
+            for (int x = 0; x < levelDims.x; x++)
             {
                 Vector3Int currentPos = new Vector3Int(x, y, 0);
                 layout += GetParticipant(wallMap, currentPos);
@@ -44,13 +41,13 @@ public class SceneTester : MonoBehaviour
                 layout += GetParticipant(mirrorMap, currentPos);
                 layout += GetParticipant(playerMap, currentPos);
 
-                if (x < rightBound - 1)
+                if (x < levelDims.x - 1)
                 {
                     layout += GameGrid.GetDelim('C');
                 }
             }
 
-            if (y > downBound)
+            if (y > 0)
             {
                 layout += GameGrid.GetDelim('R');
             }
