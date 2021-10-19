@@ -6,11 +6,11 @@ public class GameGrid : MonoBehaviour
 {
     /** The text file to read from when instantiating the grid and its objects. 
      * Contains all the information to build a level from prefabs. */
-    [SerializeField] private TextAsset levelLayout;
+    [SerializeField] private static TextAsset levelLayout;
     /** The delimiter to split rows up by in the levelLayout text file. */
-    private char rowDelim = ':';
+    private static char rowDelim = ':';
     /** The delimiter to split columns up by in the levelLayout text file. */
-    private char colDelim = '-';
+    private static char colDelim = '-';
 
     /** The internal array that stores groups of Actors, the fundamental objects 
      * that do things in the game world. The actual data type is GridSquare, a private 
@@ -434,5 +434,30 @@ public class GameGrid : MonoBehaviour
     private void CompleteLevel()
     {
         Debug.Log("Level Complete!");
+    }
+
+    public static char GetDelim(char specifier)
+    {
+        switch(specifier)
+        {
+            case 'R':
+                {
+                    return rowDelim;
+                }
+            case 'C':
+                {
+                    return colDelim;
+                }
+            default:
+                {
+                    Debug.LogError("You tried to get a delimiter that does not exist. Pass GetDelim 'R' for rows and 'C' for columns.");
+                    return '\0';
+                }
+        }
+    }
+
+    public static void SetLayout(TextAsset layout)
+    {
+        levelLayout = layout;
     }
 }

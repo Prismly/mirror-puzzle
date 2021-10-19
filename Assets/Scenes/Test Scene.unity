@@ -248,6 +248,10 @@ PrefabInstance:
       value: Grid Controller
       objectReference: {fileID: 0}
     - target: {fileID: 6238462936759224386, guid: 93851bb0ce9ceb545a5ca9c22645e2a1, type: 3}
+      propertyPath: levelLayout
+      value: 
+      objectReference: {fileID: 4900000, guid: 5429f8d42211e5c43ad4cd62b2d1c9b5, type: 3}
+    - target: {fileID: 6238462936759224386, guid: 93851bb0ce9ceb545a5ca9c22645e2a1, type: 3}
       propertyPath: colliderReductionOffset
       value: 0.1
       objectReference: {fileID: 0}
