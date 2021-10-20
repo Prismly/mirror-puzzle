@@ -326,7 +326,7 @@ public class GameGrid : MonoBehaviour
      *  @param dir - the direction in which to move the actor
      *  @return whether the actor was able to move into the next space.
      */
-    public bool MoveActorInGrid(Vector2Int startPos, Vector2Int dir, bool pushing)
+    public int MoveActorInGrid(Vector2Int startPos, Vector2Int dir, bool pushing)
     {
         Vector2Int dirOffset = dir;
         dirOffset.y = -dirOffset.y;
@@ -344,22 +344,30 @@ public class GameGrid : MonoBehaviour
                 {
                     //There is nothing obstructive in the way, so the actor is free to move into that spot.
                     startSquare.GiveOccupantTo(endSquare);
-                    return true;
+                    return 1;
                 }
             }
             else if(endSquare.GetOccupantAt(endSquare.GetFirstMovableOccupantIndex()).GetComponent<Actor>().GetIsMovable() && !pushing)
             {
                 //There is something in the way, if it is pushable and isn't already being pushed by a non-player, perform all these checks again on the new position.
-                if(MoveActorInGrid(endPos, dir, true))
+                int movedActorCount = MoveActorInGrid(endPos, dir, true);
+                if (movedActorCount > 0)
                 {
                     //We successfully pushed the object in front of us, thus we are clear to move too
                     startSquare.GiveOccupantTo(endSquare);
-                    return true;
+                    return movedActorCount + 1;
                 }
             }
         }
 
-        return false;
+        return 0;
+    }
+
+    public void UndoMove(Vector2Int startPos, Vector3Int previousMove)
+    {
+        Vector2Int farthestPushedPos = new Vector2Int(startPos.x + (previousMove.x * (previousMove.z - 1)), startPos.y - (previousMove.y * (previousMove.z - 1)));
+        Vector2Int oppDir = new Vector2Int(-previousMove.x, -previousMove.y);
+        MoveActorInGrid(farthestPushedPos, oppDir, false);
     }
 
     /**

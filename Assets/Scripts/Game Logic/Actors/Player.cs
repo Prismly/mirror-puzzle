@@ -14,7 +14,8 @@ public class Player : Actor
     private KeyCode downMovement = KeyCode.DownArrow;
     private KeyCode undo = KeyCode.Z;
 
-    private Stack<Vector2Int> moves = new Stack<Vector2Int>();
+    /** The z coordinate tracks the total number of actors moved by the action. */
+    private Stack<Vector3Int> moves = new Stack<Vector3Int>();
 
     /**
      * Called once every frame, runs the function that detects player input.
@@ -38,9 +39,10 @@ public class Player : Actor
                 //LEFT MOVEMENT
                 gameObject.GetComponent<SpriteRenderer>().sprite = leftSprite;
                 base.SetFacing('L');
-                if(gameGrid.MoveActorInGrid(gridPosition, Vector2Int.left, false))
+                int movedActorCount = gameGrid.MoveActorInGrid(gridPosition, Vector2Int.left, false);
+                if (movedActorCount > 0)
                 {
-                    moves.Push(Vector2Int.left);
+                    moves.Push(new Vector3Int(-1, 0, movedActorCount));
                 }
                 gameGrid.QueueLaserIOUpdate();
 
@@ -50,9 +52,10 @@ public class Player : Actor
                 //RIGHT MOVEMENT
                 gameObject.GetComponent<SpriteRenderer>().sprite = rightSprite;
                 base.SetFacing('R');
-                if (gameGrid.MoveActorInGrid(gridPosition, Vector2Int.right, false))
+                int movedActorCount = gameGrid.MoveActorInGrid(gridPosition, Vector2Int.right, false);
+                if (movedActorCount > 0)
                 {
-                    moves.Push(Vector2Int.right);
+                    moves.Push(new Vector3Int(1, 0, movedActorCount));
                 }
                 gameGrid.QueueLaserIOUpdate();
             }
@@ -61,9 +64,10 @@ public class Player : Actor
                 //UPWARD MOVEMENT
                 gameObject.GetComponent<SpriteRenderer>().sprite = upSprite;
                 base.SetFacing('U');
-                if (gameGrid.MoveActorInGrid(gridPosition, Vector2Int.up, false))
+                int movedActorCount = gameGrid.MoveActorInGrid(gridPosition, Vector2Int.up, false);
+                if (movedActorCount > 0)
                 {
-                    moves.Push(Vector2Int.up);
+                    moves.Push(new Vector3Int(0, 1, movedActorCount));
                 }
                 gameGrid.QueueLaserIOUpdate();
             }
@@ -72,9 +76,10 @@ public class Player : Actor
                 //DOWNWARD MOVEMENT
                 gameObject.GetComponent<SpriteRenderer>().sprite = downSprite;
                 base.SetFacing('D');
-                if (gameGrid.MoveActorInGrid(gridPosition, Vector2Int.down, false))
+                int movedActorCount = gameGrid.MoveActorInGrid(gridPosition, Vector2Int.down, false);
+                if (movedActorCount > 0)
                 {
-                    moves.Push(Vector2Int.down);
+                    moves.Push(new Vector3Int(0, -1, movedActorCount));
                 }
                 gameGrid.QueueLaserIOUpdate();
             }
@@ -83,7 +88,7 @@ public class Player : Actor
                 //UNDO MOVEMENT
                 if(moves.Count > 0)
                 {
-                    Vector2Int previousMove = moves.Pop();
+                    Vector3Int previousMove = moves.Pop();
                     
                     if(previousMove.x > 0)
                     {
@@ -105,7 +110,7 @@ public class Player : Actor
                         }
                     }
 
-                    //gameGrid.PullActorInGrid(gridPosition, previousMove, false);
+                    gameGrid.UndoMove(gridPosition, previousMove);
                     gameGrid.QueueLaserIOUpdate();
                 }
             }
