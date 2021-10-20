@@ -24,15 +24,14 @@ public class MainMenuManager : MonoBehaviour
     public void Start()
     {
         StaticData.InitializeLevelArray(levels);
-        continueFromButton.GetComponentInChildren<Text>().text = "Continue From: " + StaticData.GetLevelSelected();
-        maxULText.text = "Next Level: " + StaticData.GetCurrentLevelUnlocked();
+        UpdateTextComponents();
     }
 
     public void ResetProgress()
     {
         StaticData.SetLevelSelected(1);
         StaticData.SetCurrentLevelUnlocked(1);
-        continueFromButton.GetComponentInChildren<Text>().text = "Continue From: " + StaticData.GetCurrentLevelUnlocked();
+        UpdateTextComponents();
     }
 
     public void IncrementSelectedLevel(int diff)
@@ -48,7 +47,7 @@ public class MainMenuManager : MonoBehaviour
         }
 
         StaticData.SetLevelSelected(result);
-        continueFromButton.GetComponentInChildren<Text>().text = "Continue From: " + StaticData.GetLevelSelected();
+        
     }
 
     public void LoadLevel(int levelNum)
@@ -60,5 +59,11 @@ public class MainMenuManager : MonoBehaviour
     public void LoadSelectedLevel()
     {
         LoadLevel(StaticData.GetLevelSelected());
+    }
+
+    private void UpdateTextComponents()
+    {
+        continueFromButton.GetComponentInChildren<Text>().text = "Continue From: " + StaticData.GetLevelSelected();
+        maxULText.GetComponent<Text>().text = "Current Level: " + StaticData.GetLevelSelected();
     }
 }

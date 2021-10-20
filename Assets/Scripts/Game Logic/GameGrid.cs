@@ -22,7 +22,9 @@ public class GameGrid : MonoBehaviour
     /** The prefab for a ground tile GameObject. One is generated on every GridSquare, 
      * so that even if things move, there's always at least terrain. */
     [SerializeField] private GameObject groundPrefab;
-    [SerializeField] private GameObject levelEnderPrefab;
+    [SerializeField] private GameObject levelWinnerPrefab;
+    [SerializeField] private GameObject levelLoserPrefab;
+    public static GameObject levelLoserPrefabStatic;
     private static bool levelComplete = false;
 
     /** Empty GameObjects that serve as containers to store all the Ground/Wall Actors in, 
@@ -47,9 +49,10 @@ public class GameGrid : MonoBehaviour
     /** The factor by which to reduce each dimension of an Actor's BoxCollider2D, to reduce the amount of edge-to-edge collisions. */
     private float colliderReductionOffset = 0.1f;
 
-    private KeyCode reset = KeyCode.R;
+    public static KeyCode reset = KeyCode.R;
 
-    [SerializeField] Camera sceneCamera;
+    public static Camera sceneCameraStatic;
+    [SerializeField] private Camera sceneCamera;
 
     /**
      * Runs on scene startup, responsible for initializing the gridArray and populating it
@@ -61,14 +64,12 @@ public class GameGrid : MonoBehaviour
         GenerateLevelObjects();
         levelIsActive = true;
 
-        sceneCamera.transform.position = new Vector3(((float)gridArray.GetLength(1) / 2) - 0.5f, -((float) gridArray.GetLength(0) / 2) + 0.5f, -10);
-        sceneCamera.orthographicSize = gridArray.GetLength(0) * 0.5f;
+        sceneCameraStatic.transform.position = new Vector3(((float)gridArray.GetLength(1) / 2) - 0.5f, -((float) gridArray.GetLength(0) / 2) + 0.5f, -10);
+        sceneCameraStatic.orthographicSize = gridArray.GetLength(0) * 0.5f;
     }
 
     public void Update()
     {
-        Debug.Log(levelComplete);
-
         if (levelIsActive)
         {
             if (Input.GetKeyDown(reset))
@@ -102,6 +103,8 @@ public class GameGrid : MonoBehaviour
     private void InitializeStatics()
     {
         levelComplete = false;
+        sceneCameraStatic = sceneCamera;
+        levelLoserPrefabStatic = levelLoserPrefab;
     }
 
     /**
@@ -518,8 +521,8 @@ public class GameGrid : MonoBehaviour
     {
         StaticData.UnlockNextLevel();
         player.GetComponent<Player>().SetCanMove(false);
-        GameObject ender = Instantiate(levelEnderPrefab);
-        ender.transform.position = new Vector3(sceneCamera.transform.position.x, sceneCamera.transform.position.y, 0);
+        GameObject ender = Instantiate(levelWinnerPrefab);
+        ender.transform.position = new Vector3(sceneCameraStatic.transform.position.x, sceneCameraStatic.transform.position.y, 0);
         levelComplete = true;
     }
 

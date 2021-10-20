@@ -13,7 +13,7 @@ public class LevelEnder : MonoBehaviour
         {
             StaticData.ProgressToNextLevel();
         }
-        else if(Input.GetKeyDown(Player.undo))
+        else if(Input.GetKeyDown(Player.undo) || Input.GetKeyDown(GameGrid.reset))
         {
             GameGrid.SetLevelComplete(false);
             Destroy(gameObject);

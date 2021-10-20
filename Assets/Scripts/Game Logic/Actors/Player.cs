@@ -222,6 +222,11 @@ public class Player : Actor
 
     public void SetIsAlive(bool isAliveIn)
     {
+        if(!isAliveIn)
+        {
+            GameObject ender = Instantiate(GameGrid.levelLoserPrefabStatic);
+            ender.transform.position = new Vector3(GameGrid.sceneCameraStatic.transform.position.x, GameGrid.sceneCameraStatic.transform.position.y, 0);
+        }
         isAlive = isAliveIn;
         GetComponent<SpriteRenderer>().enabled = isAliveIn;
         GetComponent<BoxCollider2D>().enabled = isAliveIn;
