@@ -61,6 +61,8 @@ public class Button : Actor
                         connecteds.Add(c);
                     }
                 }
+
+                connecteds.Add(o);
             }
         }
 

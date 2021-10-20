@@ -8,9 +8,12 @@ public class Wire : Actor
     private Vector2Int dir1;
     private Vector2Int dir2;
     private bool isLit;
+    private char facingId;
 
     public override void SetFacing(char dirId)
     {
+        facingId = dirId;
+
         switch (dirId)
         {
             case 'L':
@@ -114,24 +117,14 @@ public class Wire : Actor
 
     public override void PerformButtonAction()
     {
-        if (facing.Equals(Vector2Int.left))
+        if(char.IsLower(facingId))
         {
-            SetFacing('R');
-        }
-        else if (facing.Equals(Vector2Int.down))
-        {
-            SetFacing('L');
-        }
-        else if (facing.Equals(Vector2Int.up))
-        {
-            SetFacing('D');
+            SetFacing(char.ToUpper(facingId));
         }
         else
         {
-            SetFacing('U');
+            SetFacing(char.ToLower(facingId));
         }
-
-        isStop = !isStop;
     }
 
     public Vector2Int RotateWithWire(Vector2Int directionOfScan)

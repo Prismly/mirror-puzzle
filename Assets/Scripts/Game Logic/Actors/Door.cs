@@ -6,8 +6,6 @@ public class Door : Actor
 {
     public override void PerformButtonAction()
     {
-        Debug.Log(facing);
-
         if (facing.Equals(Vector2Int.left))
         {
             SetFacing('R');

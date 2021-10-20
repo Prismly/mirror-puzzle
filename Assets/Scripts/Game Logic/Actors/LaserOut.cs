@@ -181,7 +181,39 @@ public class LaserOut : Actor
             return Vector2.zero;
         }
     }
-    
+
+    public override void SetFacing(char dirId)
+    {
+        isOn = char.IsUpper(dirId);
+        switch (char.ToUpper(dirId))
+        {
+            case 'L':
+                {
+                    facing = Vector2Int.left;
+                    gameObject.GetComponent<SpriteRenderer>().sprite = leftSprite;
+                    break;
+                }
+            case 'R':
+                {
+                    facing = Vector2Int.right;
+                    gameObject.GetComponent<SpriteRenderer>().sprite = rightSprite;
+                    break;
+                }
+            case 'U':
+                {
+                    facing = Vector2Int.up;
+                    gameObject.GetComponent<SpriteRenderer>().sprite = upSprite;
+                    break;
+                }
+            case 'D':
+                {
+                    facing = Vector2Int.down;
+                    gameObject.GetComponent<SpriteRenderer>().sprite = downSprite;
+                    break;
+                }
+        }
+    }
+
     /**
      * Destroys all laserSegments associated with this laser output actor and fires a new laser to redraw the laser's path.
      */
