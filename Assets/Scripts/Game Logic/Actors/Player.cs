@@ -5,19 +5,20 @@ using UnityEngine;
 public class Player : Actor
 {
     /** The keyboard key corresponding to the command to move the player character LEFT by one square. */
-    private KeyCode leftMovement = KeyCode.LeftArrow;
+    public static KeyCode leftMovement = KeyCode.LeftArrow;
     /** The keyboard key corresponding to the command to move the player character RIGHT by one square. */
-    private KeyCode rightMovement = KeyCode.RightArrow;
+    public static KeyCode rightMovement = KeyCode.RightArrow;
     /** The keyboard key corresponding to the command to move the player character UP by one square. */
-    private KeyCode upMovement = KeyCode.UpArrow;
+    public static KeyCode upMovement = KeyCode.UpArrow;
     /** The keyboard key corresponding to the command to move the player character DOWN by one square. */
-    private KeyCode downMovement = KeyCode.DownArrow;
-    private KeyCode undo = KeyCode.Z;
+    public static KeyCode downMovement = KeyCode.DownArrow;
+    public static KeyCode undo = KeyCode.Z;
 
     private float inputTimerTotal = 0.15f;
     private float inputTimer = 0f;
 
     private bool isAlive = true;
+    private bool canMove = true;
 
     /** The z coordinate tracks the total number of actors moved by the action. */
     private Stack<Vector3Int> moves = new Stack<Vector3Int>();
@@ -44,7 +45,7 @@ public class Player : Actor
         KeyCode[] keycodesInOrder = { leftMovement, rightMovement, upMovement, downMovement };
         Vector2Int[] dirsInOrder = { Vector2Int.left, Vector2Int.right, Vector2Int.up, Vector2Int.down };
 
-        if (isAlive)
+        if (isAlive && canMove)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -182,10 +183,8 @@ public class Player : Actor
     {
         if (moves.Count > 0)
         {
-            if (!isAlive)
-            {
-                SetIsAlive(true);
-            }
+            SetIsAlive(true);
+            SetCanMove(true);
 
             Vector3Int previousMove = moves.Pop();
 
@@ -219,5 +218,10 @@ public class Player : Actor
         isAlive = isAliveIn;
         GetComponent<SpriteRenderer>().enabled = isAliveIn;
         GetComponent<BoxCollider2D>().enabled = isAliveIn;
+    }
+
+    public void SetCanMove(bool canMoveIn)
+    {
+        canMove = canMoveIn;
     }
 }

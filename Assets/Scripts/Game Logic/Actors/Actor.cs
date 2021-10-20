@@ -186,8 +186,6 @@ public class Actor : MonoBehaviour
      */
     public void InstantActorPosUpdate(Vector2Int newPos, bool updateTransformAndCollider, bool updateGridPosition)
     {
-        Debug.Log(gridPosition);
-        
         //"Grid positions" refer to a column/row of the game grid array, where the top row is labelled "0".
         //This is why we flip the y coordinate; to flip the final image vertically
         if (updateGridPosition)

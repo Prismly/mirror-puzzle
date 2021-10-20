@@ -69,7 +69,7 @@ public class Button : Actor
         return connecteds;
     }
 
-    private void ActivateConnectedActors()
+    public void ActivateConnectedActors()
     {
         foreach(GameObject o in connectedTo)
         {

@@ -22,6 +22,8 @@ public class GameGrid : MonoBehaviour
     /** The prefab for a ground tile GameObject. One is generated on every GridSquare, 
      * so that even if things move, there's always at least terrain. */
     [SerializeField] private GameObject groundPrefab;
+    [SerializeField] private GameObject levelEnderPrefab;
+    private static bool levelComplete = false;
 
     /** Empty GameObjects that serve as containers to store all the Ground/Wall Actors in, 
      * making the hierarchy look less cluttered at runtime. */
@@ -40,6 +42,7 @@ public class GameGrid : MonoBehaviour
      * and to check if they are all lit, in which case the level is complete. */
     private List<GameObject> laserIns;
     private List<GameObject> buttons;
+    private GameObject player;
 
     /** The factor by which to reduce each dimension of an Actor's BoxCollider2D, to reduce the amount of edge-to-edge collisions. */
     private float colliderReductionOffset = 0.1f;
@@ -63,6 +66,8 @@ public class GameGrid : MonoBehaviour
 
     public void Update()
     {
+        Debug.Log(levelComplete);
+
         if (levelIsActive)
         {
             if (Input.GetKeyDown(reset))
@@ -195,6 +200,10 @@ public class GameGrid : MonoBehaviour
                 else if (actorPrefab.GetComponent<Button>() != null)
                 {
                     buttons.Add(actor);
+                }
+                else if (actorPrefab.GetComponent<Player>() != null)
+                {
+                    player = actor;
                 }
 
                 occupants.Add(actor);
@@ -371,6 +380,15 @@ public class GameGrid : MonoBehaviour
     {
         Vector2Int farthestPushedPos = new Vector2Int(startPos.x + (previousMove.x * (previousMove.z - 1)), startPos.y - (previousMove.y * (previousMove.z - 1)));
         Vector2Int oppDir = new Vector2Int(-previousMove.x, -previousMove.y);
+
+        foreach(GameObject o in GetGridSquareOccupants(startPos))
+        {
+            if(o.GetComponent<Button>() != null)
+            {
+                o.GetComponent<Button>().ActivateConnectedActors();
+            }
+        }
+
         MoveActorInGrid(farthestPushedPos, oppDir, false);
     }
 
@@ -469,18 +487,21 @@ public class GameGrid : MonoBehaviour
      */
     private void CheckForWin()
     {
-        int litGoals = 0;
-        foreach (GameObject o in laserIns)
+        if(!levelComplete)
         {
-            if (o.GetComponent<LaserIn>().GetIsLit())
+            int litGoals = 0;
+            foreach (GameObject o in laserIns)
             {
-                litGoals++;
+                if (o.GetComponent<LaserIn>().GetIsLit())
+                {
+                    litGoals++;
+                }
             }
-        }
-        if (litGoals == laserIns.Count)
-        {
-            //All goals are lit, the player has finished the level!
-            CompleteLevel();
+            if (litGoals == laserIns.Count)
+            {
+                //All goals are lit, the player has finished the level!
+                CompleteLevel();
+            }
         }
     }
 
@@ -489,7 +510,15 @@ public class GameGrid : MonoBehaviour
      */
     private void CompleteLevel()
     {
-        Debug.Log("Level Complete!");
+        player.GetComponent<Player>().SetCanMove(false);
+        GameObject ender = Instantiate(levelEnderPrefab);
+        ender.transform.position = new Vector3(sceneCamera.transform.position.x, sceneCamera.transform.position.y, 0);
+        levelComplete = true;
+    }
+
+    public static void SetLevelComplete(bool val)
+    {
+        levelComplete = val;
     }
 
     public static char GetDelim(char specifier)

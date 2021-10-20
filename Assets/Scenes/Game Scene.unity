@@ -256,6 +256,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 519420031}
     - target: {fileID: 6238462936759224386, guid: 93851bb0ce9ceb545a5ca9c22645e2a1, type: 3}
+      propertyPath: levelEnderPrefab
+      value: 
+      objectReference: {fileID: 5277495459514122404, guid: 5d6a498c76dbec849a31caf56540c42e, type: 3}
+    - target: {fileID: 6238462936759224386, guid: 93851bb0ce9ceb545a5ca9c22645e2a1, type: 3}
       propertyPath: defaultLevelLayout
       value: 
       objectReference: {fileID: 4900000, guid: 368ec86b412e49a48a3c659cb272803b, type: 3}

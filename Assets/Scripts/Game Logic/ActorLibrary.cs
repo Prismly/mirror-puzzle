@@ -19,9 +19,12 @@ public class ActorLibrary : MonoBehaviour
      */
     public void Start()
     {
-        for (int i = 0; i < keys.Length; i++)
+        if(prefabs.Count == 0)
         {
-            prefabs.Add(keys[i], values[i]);
+            for (int i = 0; i < keys.Length; i++)
+            {
+                prefabs.Add(keys[i], values[i]);
+            }
         }
     }
 
