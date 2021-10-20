@@ -341,25 +341,48 @@ public class GameGrid : MonoBehaviour
         //If there is an actor in the starting position to move...
         if(startSquare.GetFirstMovableOccupantIndex() != -1)
         {
-            if(endSquare.GetFirstMovableOccupantIndex() == -1)
+            //if(endSquare.GetFirstMovableOccupantIndex() == -1)
+            //{
+            //    //There is nothing movable in the way, check if there is anything solid...
+            //    if(endSquare.getFirstStoppingOccupantIndex() == -1)
+            //    {
+            //        //There is nothing obstructive in the way, so the actor is free to move into that spot.
+            //        startSquare.GiveOccupantTo(dir);
+            //        return 1;
+            //    }
+            //}
+            //else if(endSquare.GetOccupantAt(endSquare.GetFirstMovableOccupantIndex()).GetComponent<Actor>().GetIsMovable() && !pushing)
+            //{
+            //    //There is something in the way, if it is pushable and isn't already being pushed by a non-player, perform all these checks again on the new position.
+            //    int movedActorCount = MoveActorInGrid(endPos, dir, true);
+            //    if (movedActorCount > 0)
+            //    {
+            //        //We successfully pushed the object in front of us, thus we are clear to move too
+            //        startSquare.GiveOccupantTo(dir);
+            //        return movedActorCount + 1;
+            //    }
+            //}
+
+            
+            if (endSquare.getFirstStoppingOccupantIndex() == -1)
             {
-                //There is nothing movable in the way, check if there is anything solid...
-                if(endSquare.getFirstStoppingOccupantIndex() == -1)
+                //There is nothing stopping in the way, check if there is anything movable...
+                if (endSquare.GetFirstMovableOccupantIndex() == -1)
                 {
                     //There is nothing obstructive in the way, so the actor is free to move into that spot.
                     startSquare.GiveOccupantTo(dir);
                     return 1;
                 }
-            }
-            else if(endSquare.GetOccupantAt(endSquare.GetFirstMovableOccupantIndex()).GetComponent<Actor>().GetIsMovable() && !pushing)
-            {
-                //There is something in the way, if it is pushable and isn't already being pushed by a non-player, perform all these checks again on the new position.
-                int movedActorCount = MoveActorInGrid(endPos, dir, true);
-                if (movedActorCount > 0)
+                else if (endSquare.GetOccupantAt(endSquare.GetFirstMovableOccupantIndex()).GetComponent<Actor>().GetIsMovable() && !pushing)
                 {
-                    //We successfully pushed the object in front of us, thus we are clear to move too
-                    startSquare.GiveOccupantTo(dir);
-                    return movedActorCount + 1;
+                    //There is something in the way, if it is pushable and isn't already being pushed by a non-player, perform all these checks again on the new position.
+                    int movedActorCount = MoveActorInGrid(endPos, dir, true);
+                    if (movedActorCount > 0)
+                    {
+                        //We successfully pushed the object in front of us, thus we are clear to move too
+                        startSquare.GiveOccupantTo(dir);
+                        return movedActorCount + 1;
+                    }
                 }
             }
         }

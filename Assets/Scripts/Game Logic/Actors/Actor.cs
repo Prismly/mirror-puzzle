@@ -219,6 +219,6 @@ public class Actor : MonoBehaviour
 
     public virtual void PerformButtonAction()
     {
-
+        gameGrid.QueueLaserIOUpdate();
     }
 }

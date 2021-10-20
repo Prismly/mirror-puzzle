@@ -26,6 +26,8 @@ public class Door : Actor
             SetFacing('U');
             isStop = true;
         }
+
+        base.PerformButtonAction();
     }
 
     public override void SetFacing(char dirId)
