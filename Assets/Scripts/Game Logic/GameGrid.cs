@@ -39,6 +39,7 @@ public class GameGrid : MonoBehaviour
     /** A list of every laser input tile in the level, used both to turn them off before every laser update 
      * and to check if they are all lit, in which case the level is complete. */
     private List<GameObject> laserIns;
+    private List<GameObject> buttons;
 
     /** The factor by which to reduce each dimension of an Actor's BoxCollider2D, to reduce the amount of edge-to-edge collisions. */
     private float colliderReductionOffset = 0.1f;
@@ -107,6 +108,7 @@ public class GameGrid : MonoBehaviour
         wallContainer = new GameObject("Wall Tiles");
         laserIns = new List<GameObject>();
         laserOuts = new List<GameObject>();
+        buttons = new List<GameObject>();
 
         //First row is processed separately in order to initialize gridArray with the corrent amount of columns.
         string[] layoutByRow = levelLayout.text.Split(rowDelim);
@@ -126,6 +128,8 @@ public class GameGrid : MonoBehaviour
                 ParseTileString(layoutByCol[x], new Vector2Int(x, y));
             }
         }
+
+        ConnectButtonsThroughWires();
     }
 
     /**
@@ -187,6 +191,10 @@ public class GameGrid : MonoBehaviour
                 else if (actorPrefab.GetComponent<LaserIn>() != null)
                 {
                     laserIns.Add(actor);
+                }
+                else if (actorPrefab.GetComponent<Button>() != null)
+                {
+                    buttons.Add(actor);
                 }
 
                 occupants.Add(actor);
@@ -388,6 +396,14 @@ public class GameGrid : MonoBehaviour
     public float GetColliderReductionOffset()
     {
         return colliderReductionOffset;
+    }
+
+    private void ConnectButtonsThroughWires()
+    {
+        foreach(GameObject o in buttons)
+        {
+            o.GetComponent<Button>().FindConnectedActors();
+        }
     }
 
     /**

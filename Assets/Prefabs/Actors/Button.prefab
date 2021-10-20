@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7361024559715782881}
-  - component: {fileID: -265185122749515972}
   - component: {fileID: 6065855204653345953}
   - component: {fileID: 8799965724570723584}
   - component: {fileID: 2934543451710644708}
+  - component: {fileID: 6764785409166931868}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -34,24 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-265185122749515972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7361024559715782882}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b664398991a9ed42957169ff1a99890, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftSprite: {fileID: 0}
-  rightSprite: {fileID: 0}
-  upSprite: {fileID: 0}
-  downSprite: {fileID: 0}
-  isMovable: 0
-  isStop: 0
 --- !u!114 &6065855204653345953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29534d72c97f93b4ebe36c65d10e8e9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftSprite: {fileID: 21300000, guid: 3542d8cdb3fb1b54ab14a4fc5428b3c1, type: 3}
+  rightSprite: {fileID: 21300000, guid: 3542d8cdb3fb1b54ab14a4fc5428b3c1, type: 3}
+  upSprite: {fileID: 21300000, guid: 3542d8cdb3fb1b54ab14a4fc5428b3c1, type: 3}
+  downSprite: {fileID: 21300000, guid: 3542d8cdb3fb1b54ab14a4fc5428b3c1, type: 3}
+  isMovable: 0
+  isStop: 0
 --- !u!212 &8799965724570723584
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -101,8 +89,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 407695427
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3542d8cdb3fb1b54ab14a4fc5428b3c1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -141,3 +129,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &6764785409166931868
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7361024559715782882}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

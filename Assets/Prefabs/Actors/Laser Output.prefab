@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2827888847686097672}
   m_Layer: 0
   m_Name: Laser Output
-  m_TagString: Untagged
+  m_TagString: Wirable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 823778977
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ca556b68c5e59854eb9f7f6fd569ac4d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -101,8 +101,7 @@ MonoBehaviour:
   upSprite: {fileID: 21300000, guid: ca556b68c5e59854eb9f7f6fd569ac4d, type: 3}
   downSprite: {fileID: 21300000, guid: 7a902b339ed15e249be86b4acc0bdd6a, type: 3}
   isMovable: 0
-  isWall: 0
-  isDeath: 0
+  isStop: 0
   laserSegmentPrefab: {fileID: 456012417540935356, guid: e1e8197584a49cf4fbbe0c189e49e0de, type: 3}
   laserVertical: {fileID: 21300000, guid: a51789c975a682548bb894642624348b, type: 3}
   laserHorizontal: {fileID: 21300000, guid: 57e583e4fb1a2a141a9484304eccf86c, type: 3}

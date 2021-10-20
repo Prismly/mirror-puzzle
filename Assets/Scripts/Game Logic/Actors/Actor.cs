@@ -23,9 +23,9 @@ public class Actor : MonoBehaviour
     [SerializeField] protected Sprite downSprite;
 
     /** Whether this Actor is able to move from square to square, including the player. */
-    [SerializeField] private bool isMovable;
+    [SerializeField] protected bool isMovable;
     /** Whether this Actor will stop other Actors from moving into the square it occupies. */
-    [SerializeField] private bool isStop;
+    [SerializeField] protected bool isStop;
 
     /**
      * Sets the gameGrid reference for this Actor.
@@ -52,7 +52,7 @@ public class Actor : MonoBehaviour
      */
     public virtual void SetFacing(char dirId)
     {
-        switch(dirId)
+        switch (dirId)
         {
             case 'L':
                 {
@@ -132,5 +132,10 @@ public class Actor : MonoBehaviour
     public virtual void SelfDestruct()
     {
         Destroy(gameObject);
+    }
+
+    public virtual void PerformButtonAction()
+    {
+
     }
 }

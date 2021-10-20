@@ -14,6 +14,8 @@ public class LaserOut : Actor
     /** The sprite for a horizontal laser segment. */
     [SerializeField] private Sprite laserHorizontal;
 
+    private bool isOn = true;
+
     /**
      * "Fires" a laser from the specified origin point in the given direction, creating an object called a laser segment.
      * Visually, the created laser segment should extend from the origin square to the first stopping actor OR the first mirror actor it encounters.
@@ -190,7 +192,10 @@ public class LaserOut : Actor
             Destroy(o);
         }
 
-        FireLaser(new Vector2Int(gridPosition.x, -gridPosition.y), facing, false);
+        if (isOn)
+        {
+            FireLaser(new Vector2Int(gridPosition.x, -gridPosition.y), facing, false);
+        }
     }
 
     public override void SelfDestruct()
@@ -200,5 +205,11 @@ public class LaserOut : Actor
             Destroy(o);
         }
         base.SelfDestruct();
+    }
+
+    public override void PerformButtonAction()
+    {
+        isOn = !isOn;
+        UpdateLasers();
     }
 }
