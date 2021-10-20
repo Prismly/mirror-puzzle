@@ -14,15 +14,19 @@ public class Player : Actor
     private KeyCode downMovement = KeyCode.DownArrow;
     private KeyCode undo = KeyCode.Z;
 
+    private float inputTimerTotal = 0.15f;
+    private float inputTimer = 0f;
+
     /** The z coordinate tracks the total number of actors moved by the action. */
     private Stack<Vector3Int> moves = new Stack<Vector3Int>();
 
     /**
      * Called once every frame, runs the function that detects player input.
      */
-    public void Update()
+    public override void Update()
     {
         playerInput();
+        base.Update();
     }
 
     /**
@@ -32,20 +36,96 @@ public class Player : Actor
      */
     private void playerInput()
     {
-        if(gameGrid.GetLevelIsActive())
+        bool keyHeld = false;
+        Sprite[] spritesInOrder = { leftSprite, rightSprite, upSprite, downSprite };
+        char[] charsInOrder = { 'L', 'R', 'U', 'D' };
+        KeyCode[] keycodesInOrder = { leftMovement, rightMovement, upMovement, downMovement };
+        Vector2Int[] dirsInOrder = { Vector2Int.left, Vector2Int.right, Vector2Int.up, Vector2Int.down };
+
+        if (gameGrid.GetLevelIsActive())
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (Input.GetKeyDown(keycodesInOrder[i]))
+                {
+                    //Key has just been pressed...
+                    gameObject.GetComponent<SpriteRenderer>().sprite = spritesInOrder[i];
+                    base.SetFacing(charsInOrder[i]);
+                    MovementInput(dirsInOrder[i]);
+                }
+                else if (Input.GetKey(keycodesInOrder[i]))
+                {
+                    //Key is being held...
+                    if (inputTimer >= inputTimerTotal)
+                    {
+                        //Move anyway
+                        gameObject.GetComponent<SpriteRenderer>().sprite = spritesInOrder[i];
+                        base.SetFacing(charsInOrder[i]);
+                        MovementInput(dirsInOrder[i]);
+                        inputTimer = 0f;
+                    }
+                    else if (!keyHeld)
+                    {
+                        inputTimer += Time.deltaTime;
+                    }
+
+                    keyHeld = true;
+                }
+            }
+
+            if (Input.GetKeyDown(undo))
+            {
+                UndoInput();
+            }
+            else if (Input.GetKey(undo))
+            {
+                //Key is being held...
+                if (inputTimer >= inputTimerTotal)
+                {
+                    //Undo anyway
+                    UndoInput();
+                    inputTimer = 0f;
+                }
+                else if (!keyHeld)
+                {
+                    inputTimer += Time.deltaTime;
+                }
+
+                keyHeld = true;
+            }
+
+            if (!keyHeld)
+            {
+                inputTimer = 0;
+            }
+        }
+
+        //Badness
+
+        /**if(gameGrid.GetLevelIsActive())
         {
             if (Input.GetKeyDown(leftMovement))
             {
                 //LEFT MOVEMENT
                 gameObject.GetComponent<SpriteRenderer>().sprite = leftSprite;
                 base.SetFacing('L');
-                int movedActorCount = gameGrid.MoveActorInGrid(gridPosition, Vector2Int.left, false);
-                if (movedActorCount > 0)
+                MovementInput(Vector2Int.left);
+            }
+            else if (Input.GetKey(leftMovement))
+            {
+                //Left is being held...
+                if (inputTimer >= inputTimerTotal)
                 {
-                    moves.Push(new Vector3Int(-1, 0, movedActorCount));
+                    //Move anyway
+                    gameObject.GetComponent<SpriteRenderer>().sprite = leftSprite;
+                    base.SetFacing('L');
+                    MovementInput(Vector2Int.left);
+                    inputTimer = 0f;
                 }
-                gameGrid.QueueLaserIOUpdate();
-
+                else
+                {
+                    inputTimer += Time.deltaTime;
+                }
             }
             if (Input.GetKeyDown(rightMovement))
             {
@@ -83,37 +163,48 @@ public class Player : Actor
                 }
                 gameGrid.QueueLaserIOUpdate();
             }
-            if (Input.GetKeyDown(undo))
-            {
-                //UNDO MOVEMENT
-                if(moves.Count > 0)
-                {
-                    Vector3Int previousMove = moves.Pop();
-                    
-                    if(previousMove.x > 0)
-                    {
-                        base.SetFacing('R');
-                    }
-                    else if(previousMove.x < 0)
-                    {
-                        base.SetFacing('L');
-                    }
-                    else
-                    {
-                        if (previousMove.y > 0)
-                        {
-                            base.SetFacing('U');
-                        }
-                        else
-                        {
-                            base.SetFacing('D');
-                        }
-                    }
+        }
+    }*/
+    }
 
-                    gameGrid.UndoMove(gridPosition, previousMove);
-                    gameGrid.QueueLaserIOUpdate();
+    private void MovementInput(Vector2Int dir)
+    {
+        int movedActorCount = gameGrid.MoveActorInGrid(gridPosition, dir, false);
+        if (movedActorCount > 0)
+        {
+            moves.Push(new Vector3Int(dir.x, dir.y, movedActorCount));
+        }
+        gameGrid.QueueLaserIOUpdate();
+    }
+
+    private void UndoInput()
+    {
+        if (moves.Count > 0)
+        {
+            Vector3Int previousMove = moves.Pop();
+
+            if (previousMove.x > 0)
+            {
+                base.SetFacing('R');
+            }
+            else if (previousMove.x < 0)
+            {
+                base.SetFacing('L');
+            }
+            else
+            {
+                if (previousMove.y > 0)
+                {
+                    base.SetFacing('U');
+                }
+                else
+                {
+                    base.SetFacing('D');
                 }
             }
+
+            gameGrid.UndoMove(gridPosition, previousMove);
+            gameGrid.QueueLaserIOUpdate();
         }
     }
 }

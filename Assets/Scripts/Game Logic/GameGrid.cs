@@ -206,7 +206,7 @@ public class GameGrid : MonoBehaviour
         ground.transform.parent = groundContainer.transform;
         occupants.Add(ground);
 
-        gridArray[pos.y, pos.x] = new GridSquare(pos, occupants);
+        gridArray[pos.y, pos.x] = new GridSquare(pos, occupants, this);
     }
 
     /**
@@ -219,6 +219,7 @@ public class GameGrid : MonoBehaviour
         private Vector2Int gridPosition;
         /** The list of Actor objects currently occupying this GridSquare. */
         private List<GameObject> occupants = new List<GameObject>();
+        private GameGrid gameGrid;
 
         /**
          * Constructs a GridSquare with the given grid position and actor occupants, 
@@ -226,8 +227,9 @@ public class GameGrid : MonoBehaviour
          * @param gridPositionIn - the grid array position at which this GridSquare will reside.
          * @param occupantsIn - a list of Actor GameObjects, all of which occupy the new GridSquare.
          */
-        public GridSquare(Vector2Int gridPositionIn, List<GameObject> occupantsIn)
+        public GridSquare(Vector2Int gridPositionIn, List<GameObject> occupantsIn, GameGrid myGrid)
         {
+            gameGrid = myGrid;
             gridPosition = gridPositionIn;
 
             foreach(GameObject o in occupantsIn)
@@ -237,7 +239,7 @@ public class GameGrid : MonoBehaviour
 
             for(int i = 0; i < occupants.Count; i++)
             {
-                occupants[i].GetComponent<Actor>().UpdateActorPos(gridPositionIn);
+                occupants[i].GetComponent<Actor>().InstantActorPosUpdate(gridPositionIn, true, true);
             }
         }
 
@@ -308,14 +310,16 @@ public class GameGrid : MonoBehaviour
          * movable occupant; behavior is undefined otherwise.
          * @param squareToGiveTo - the GridSquare to give the moving actor.
          */
-        public void GiveOccupantTo(GridSquare squareToGiveTo)
+        public void GiveOccupantTo(Vector2Int dir)
         {
+            GridSquare squareToGiveTo = gameGrid.GetGridSquare(new Vector2Int(gridPosition.x + dir.x, gridPosition.y - dir.y));
             //Assumes that a movable occupant exists in the caller square, this will have already been checked.
             int movingActorIndex = GetFirstMovableOccupantIndex();
             GameObject movingActor = occupants[movingActorIndex];
             squareToGiveTo.AddOccupant(movingActor);
             occupants.RemoveAt(movingActorIndex);
-            movingActor.GetComponent<Actor>().UpdateActorPos(squareToGiveTo.gridPosition);
+            movingActor.GetComponent<Actor>().SlowActorPosUpdate(gridPosition, dir);
+            movingActor.GetComponent<Actor>().InstantActorPosUpdate(squareToGiveTo.gridPosition, false, true);
         }
     }
 
@@ -343,7 +347,7 @@ public class GameGrid : MonoBehaviour
                 if(endSquare.getFirstStoppingOccupantIndex() == -1)
                 {
                     //There is nothing obstructive in the way, so the actor is free to move into that spot.
-                    startSquare.GiveOccupantTo(endSquare);
+                    startSquare.GiveOccupantTo(dir);
                     return 1;
                 }
             }
@@ -354,7 +358,7 @@ public class GameGrid : MonoBehaviour
                 if (movedActorCount > 0)
                 {
                     //We successfully pushed the object in front of us, thus we are clear to move too
-                    startSquare.GiveOccupantTo(endSquare);
+                    startSquare.GiveOccupantTo(dir);
                     return movedActorCount + 1;
                 }
             }
