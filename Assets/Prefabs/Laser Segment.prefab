@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 544389954918481143}
   - component: {fileID: 926377744841089473}
   - component: {fileID: 8320707401233474391}
+  - component: {fileID: 1680063470912274920}
   m_Layer: 0
   m_Name: Laser Segment
   m_TagString: Untagged
@@ -144,3 +145,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &1680063470912274920
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456012417540935356}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7fe0d490fc5ca0047b5ecc3b4991a7c8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

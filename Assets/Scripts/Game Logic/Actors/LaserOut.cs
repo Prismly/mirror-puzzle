@@ -18,6 +18,8 @@ public class LaserOut : Actor
 
     private bool isOn = true;
 
+    private static int orderInLayer = 0;
+
     /**
      * "Fires" a laser from the specified origin point in the given direction, creating an object called a laser segment.
      * Visually, the created laser segment should extend from the origin square to the first stopping actor OR the first mirror actor it encounters.
@@ -83,6 +85,8 @@ public class LaserOut : Actor
 
             //Generate a laser object for this line.
             GameObject newSegment = Instantiate(laserSegmentPrefab);
+            orderInLayer++;
+            newSegment.GetComponent<SpriteRenderer>().sortingOrder = orderInLayer;
             newSegment.GetComponent<LaserSegment>().SetOutputTile(this);
 
             Vector2 dirAbs = new Vector2(Mathf.Abs(dir.x), Mathf.Abs(dir.y));
@@ -95,12 +99,12 @@ public class LaserOut : Actor
             if (dir.x == 0)
             {
                 //Laser is being fired vertically
-                newSegment.GetComponent<SpriteRenderer>().sprite = laserVertical;
+                newSegment.GetComponent<Animator>().SetBool("isHorizontal", false);
             }
             else
             {
                 //Laser is being fired horizontally
-                newSegment.GetComponent<SpriteRenderer>().sprite = laserHorizontal;
+                newSegment.GetComponent<Animator>().SetBool("isHorizontal", true);
             }
 
             newSegment.GetComponent<BoxCollider2D>().size = new Vector2(size.x - gameGrid.GetColliderReductionOffset(), size.y - gameGrid.GetColliderReductionOffset());
