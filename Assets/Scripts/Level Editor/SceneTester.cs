@@ -13,6 +13,7 @@ public class SceneTester : MonoBehaviour
     [SerializeField] Tilemap laserIOMap;
     [SerializeField] Tilemap mirrorMap;
     [SerializeField] Tilemap playerMap;
+    [SerializeField] Tilemap wireMap;
 
     private string levelFolder = "Assets/Levels/";
     [SerializeField] private string outgoingLevelName;
@@ -40,6 +41,7 @@ public class SceneTester : MonoBehaviour
                 layout += GetParticipant(laserIOMap, currentPos);
                 layout += GetParticipant(mirrorMap, currentPos);
                 layout += GetParticipant(playerMap, currentPos);
+                layout += GetParticipant(wireMap, currentPos);
 
                 if (x < levelDims.x - 1)
                 {

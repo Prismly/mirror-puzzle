@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Mirror
+  - Wirable
+  - Wire
   layers:
   - Default
   - TransparentFX
@@ -44,11 +47,14 @@ TagManager:
   - name: Ground
     uniqueID: 3305479585
     locked: 0
-  - name: Wall
-    uniqueID: 624565553
+  - name: Wires
+    uniqueID: 407695427
     locked: 0
   - name: Laser
     uniqueID: 1184645311
+    locked: 0
+  - name: Wall
+    uniqueID: 624565553
     locked: 0
   - name: Mirror
     uniqueID: 100502939
@@ -58,4 +64,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1660235013
+    locked: 0
+  - name: Overlay
+    uniqueID: 632121059
     locked: 0

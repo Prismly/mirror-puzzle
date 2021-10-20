@@ -22,6 +22,10 @@ public class GameGrid : MonoBehaviour
     /** The prefab for a ground tile GameObject. One is generated on every GridSquare, 
      * so that even if things move, there's always at least terrain. */
     [SerializeField] private GameObject groundPrefab;
+    [SerializeField] private GameObject levelWinnerPrefab;
+    [SerializeField] private GameObject levelLoserPrefab;
+    public static GameObject levelLoserPrefabStatic;
+    private static bool levelComplete = false;
 
     /** Empty GameObjects that serve as containers to store all the Ground/Wall Actors in, 
      * making the hierarchy look less cluttered at runtime. */
@@ -35,15 +39,20 @@ public class GameGrid : MonoBehaviour
     private bool boardStateChanged = false;
 
     /** A list of every laser output tile in the level, used for updating lasers from all sources on the grid. */
-    private List<GameObject> laserOuts = new List<GameObject>();
+    private List<GameObject> laserOuts;
     /** A list of every laser input tile in the level, used both to turn them off before every laser update 
      * and to check if they are all lit, in which case the level is complete. */
-    private List<GameObject> laserIns = new List<GameObject>();
+    private List<GameObject> laserIns;
+    private List<GameObject> buttons;
+    private GameObject player;
 
     /** The factor by which to reduce each dimension of an Actor's BoxCollider2D, to reduce the amount of edge-to-edge collisions. */
     private float colliderReductionOffset = 0.1f;
 
-    [SerializeField] Camera sceneCamera;
+    public static KeyCode reset = KeyCode.R;
+
+    public static Camera sceneCameraStatic;
+    [SerializeField] private Camera sceneCamera;
 
     /**
      * Runs on scene startup, responsible for initializing the gridArray and populating it
@@ -51,15 +60,28 @@ public class GameGrid : MonoBehaviour
      */
     public void Start()
     {
-        if(levelLayout == null)
-        {
-            levelLayout = defaultLevelLayout;
-        }
+        InitializeStatics();
         GenerateLevelObjects();
         levelIsActive = true;
 
-        sceneCamera.transform.position = new Vector3(((float)gridArray.GetLength(1) / 2) - 0.5f, -((float) gridArray.GetLength(0) / 2) + 0.5f, -10);
-        sceneCamera.orthographicSize = gridArray.GetLength(0) * 0.5f;
+        sceneCameraStatic.transform.position = new Vector3(((float)gridArray.GetLength(1) / 2) - 0.5f, -((float) gridArray.GetLength(0) / 2) + 0.5f, -10);
+        sceneCameraStatic.orthographicSize = gridArray.GetLength(0) * 0.5f;
+    }
+
+    public void Update()
+    {
+        if (levelIsActive)
+        {
+            if (Input.GetKeyDown(reset))
+            {
+                ResetLevel();
+            }
+        }
+
+        foreach(GridSquare s in gridArray)
+        {
+            s.CleanOccupantsList();
+        }
     }
 
     /**
@@ -67,7 +89,7 @@ public class GameGrid : MonoBehaviour
      */
     public void FixedUpdate()
     {
-        if(startupStallFrame)
+        if (startupStallFrame)
         {
             //Stall for a single frame before executing the IO update function.
             //This is because colliders don't exist until the frame AFTER all the objects are generated. It's weird..
@@ -76,11 +98,17 @@ public class GameGrid : MonoBehaviour
         }
         else if(boardStateChanged)
         {
-            Physics2D.SyncTransforms();
             LaserIOUpdate();
             //We don't need to call LaserIOUpdate() every frame, only when the board state changes.
             boardStateChanged = false;
         }
+    }
+
+    private void InitializeStatics()
+    {
+        levelComplete = false;
+        sceneCameraStatic = sceneCamera;
+        levelLoserPrefabStatic = levelLoserPrefab;
     }
 
     /**
@@ -89,8 +117,16 @@ public class GameGrid : MonoBehaviour
      */
     private void GenerateLevelObjects()
     {
+        if (levelLayout == null)
+        {
+            levelLayout = defaultLevelLayout;
+        }
+
         groundContainer = new GameObject("Ground Tiles");
         wallContainer = new GameObject("Wall Tiles");
+        laserIns = new List<GameObject>();
+        laserOuts = new List<GameObject>();
+        buttons = new List<GameObject>();
 
         //First row is processed separately in order to initialize gridArray with the corrent amount of columns.
         string[] layoutByRow = levelLayout.text.Split(rowDelim);
@@ -110,6 +146,8 @@ public class GameGrid : MonoBehaviour
                 ParseTileString(layoutByCol[x], new Vector2Int(x, y));
             }
         }
+
+        ConnectButtonsThroughWires();
     }
 
     /**
@@ -172,6 +210,14 @@ public class GameGrid : MonoBehaviour
                 {
                     laserIns.Add(actor);
                 }
+                else if (actorPrefab.GetComponent<Button>() != null)
+                {
+                    buttons.Add(actor);
+                }
+                else if (actorPrefab.GetComponent<Player>() != null)
+                {
+                    player = actor;
+                }
 
                 occupants.Add(actor);
             }
@@ -182,7 +228,7 @@ public class GameGrid : MonoBehaviour
         ground.transform.parent = groundContainer.transform;
         occupants.Add(ground);
 
-        gridArray[pos.y, pos.x] = new GridSquare(pos, occupants);
+        gridArray[pos.y, pos.x] = new GridSquare(pos, occupants, this);
     }
 
     /**
@@ -195,6 +241,7 @@ public class GameGrid : MonoBehaviour
         private Vector2Int gridPosition;
         /** The list of Actor objects currently occupying this GridSquare. */
         private List<GameObject> occupants = new List<GameObject>();
+        private GameGrid gameGrid;
 
         /**
          * Constructs a GridSquare with the given grid position and actor occupants, 
@@ -202,8 +249,9 @@ public class GameGrid : MonoBehaviour
          * @param gridPositionIn - the grid array position at which this GridSquare will reside.
          * @param occupantsIn - a list of Actor GameObjects, all of which occupy the new GridSquare.
          */
-        public GridSquare(Vector2Int gridPositionIn, List<GameObject> occupantsIn)
+        public GridSquare(Vector2Int gridPositionIn, List<GameObject> occupantsIn, GameGrid myGrid)
         {
+            gameGrid = myGrid;
             gridPosition = gridPositionIn;
 
             foreach(GameObject o in occupantsIn)
@@ -213,7 +261,19 @@ public class GameGrid : MonoBehaviour
 
             for(int i = 0; i < occupants.Count; i++)
             {
-                occupants[i].GetComponent<Actor>().UpdateActorPos(gridPositionIn);
+                occupants[i].GetComponent<Actor>().InstantActorPosUpdate(gridPositionIn, true, true);
+            }
+        }
+
+        public void CleanOccupantsList()
+        {
+            for(int i = 0; i < occupants.Count; i++)
+            {
+                if(occupants[i] == null)
+                {
+                    occupants.RemoveAt(i);
+                    i--;
+                }
             }
         }
 
@@ -245,7 +305,7 @@ public class GameGrid : MonoBehaviour
         {
             for(int i = 0; i < occupants.Count; i++)
             {
-                if(occupants[i].GetComponent<Actor>().GetIsMovable())
+                if(occupants[i] != null && occupants[i].GetComponent<Actor>().GetIsMovable())
                 {
                     return i;
                 }
@@ -261,7 +321,7 @@ public class GameGrid : MonoBehaviour
         {
             for(int i = 0; i < occupants.Count; i++)
             {
-                if (occupants[i].GetComponent<Actor>().GetIsStop())
+                if (occupants[i] != null && occupants[i].GetComponent<Actor>().GetIsStop())
                 {
                     return i;
                 }
@@ -278,21 +338,38 @@ public class GameGrid : MonoBehaviour
             occupants.Add(newOccupant);
         }
 
+        public void RemoveOccupant(GameObject occupant)
+        {
+            occupants.Remove(occupant);
+        }
+
         /**
          * Takes the first movable occupant of the caller GridSquare and moves it from its own occupants list
          * to that of the specified adjacent GridSquare. GiveOccupantTo assumes that the caller contains a
          * movable occupant; behavior is undefined otherwise.
          * @param squareToGiveTo - the GridSquare to give the moving actor.
          */
-        public void GiveOccupantTo(GridSquare squareToGiveTo)
+        public void GiveOccupantTo(Vector2Int dir)
         {
+            GridSquare squareToGiveTo = gameGrid.GetGridSquare(new Vector2Int(gridPosition.x + dir.x, gridPosition.y - dir.y));
             //Assumes that a movable occupant exists in the caller square, this will have already been checked.
             int movingActorIndex = GetFirstMovableOccupantIndex();
             GameObject movingActor = occupants[movingActorIndex];
             squareToGiveTo.AddOccupant(movingActor);
             occupants.RemoveAt(movingActorIndex);
-            movingActor.GetComponent<Actor>().UpdateActorPos(squareToGiveTo.gridPosition);
+            movingActor.GetComponent<Actor>().SlowActorPosUpdate(gridPosition, dir);
+            movingActor.GetComponent<Actor>().InstantActorPosUpdate(squareToGiveTo.gridPosition, false, true);
         }
+    }
+
+    public void AddActorToGridSquare(GameObject actor, Vector2Int targetPos)
+    {
+        gridArray[targetPos.y, targetPos.x].AddOccupant(actor);
+    }
+
+    public void RemoveActorFromGridSquare(GameObject actor, Vector2Int targetPos)
+    {
+        gridArray[targetPos.y, targetPos.x].RemoveOccupant(actor);
     }
 
     /**
@@ -302,7 +379,7 @@ public class GameGrid : MonoBehaviour
      *  @param dir - the direction in which to move the actor
      *  @return whether the actor was able to move into the next space.
      */
-    public bool MoveActorInGrid(Vector2Int startPos, Vector2Int dir, bool pushing)
+    public int MoveActorInGrid(Vector2Int startPos, Vector2Int dir, bool pushing)
     {
         Vector2Int dirOffset = dir;
         dirOffset.y = -dirOffset.y;
@@ -313,28 +390,59 @@ public class GameGrid : MonoBehaviour
         //If there is an actor in the starting position to move...
         if(startSquare.GetFirstMovableOccupantIndex() != -1)
         {
-            if(endSquare.GetFirstMovableOccupantIndex() == -1)
+            if (endSquare.getFirstStoppingOccupantIndex() == -1)
             {
-                //There is nothing movable in the way, check if there is anything solid...
-                if(endSquare.getFirstStoppingOccupantIndex() == -1)
+                //There is nothing stopping in the way, check if there is anything movable...
+                if (endSquare.GetFirstMovableOccupantIndex() == -1)
                 {
                     //There is nothing obstructive in the way, so the actor is free to move into that spot.
-                    startSquare.GiveOccupantTo(endSquare);
-                    return true;
+                    startSquare.GiveOccupantTo(dir);
+                    return 1;
                 }
-            }
-            else if(endSquare.GetOccupantAt(endSquare.GetFirstMovableOccupantIndex()).GetComponent<Actor>().GetIsMovable() && !pushing)
-            {
-                //There is something in the way, if it is pushable and isn't already being pushed by a non-player, perform all these checks again on the new position.
-                if(MoveActorInGrid(endPos, dir, true))
+                else if (endSquare.GetOccupantAt(endSquare.GetFirstMovableOccupantIndex()).GetComponent<Actor>().GetIsMovable() && !pushing)
                 {
-                    //We successfully pushed the object in front of us, thus we are clear to move too
-                    startSquare.GiveOccupantTo(endSquare);
-                    return true;
+                    //There is something in the way, if it is pushable and isn't already being pushed by a non-player, perform all these checks again on the new position.
+                    int movedActorCount = MoveActorInGrid(endPos, dir, true);
+                    if (movedActorCount > 0)
+                    {
+                        //We successfully pushed the object in front of us, thus we are clear to move too
+                        startSquare.GiveOccupantTo(dir);
+                        return movedActorCount + 1;
+                    }
                 }
             }
         }
 
+        return 0;
+    }
+
+    public void UndoMove(Vector2Int startPos, Vector3Int previousMove)
+    {
+        Vector2Int farthestPushedPos = new Vector2Int(startPos.x + (previousMove.x * (previousMove.z - 1)), startPos.y - (previousMove.y * (previousMove.z - 1)));
+        Vector2Int oppDir = new Vector2Int(-previousMove.x, -previousMove.y);
+
+        foreach(GameObject o in GetGridSquareOccupants(startPos))
+        {
+            if(o.GetComponent<Button>() != null)
+            {
+                o.GetComponent<Button>().ActivateConnectedActors();
+            }
+        }
+
+        MoveActorInGrid(farthestPushedPos, oppDir, false);
+    }
+
+    public bool CheckZapped()
+    {
+        List<GameObject> occupants = GetGridSquareOccupants(new Vector2Int(player.GetComponent<Actor>().GetGridPosition().x, player.GetComponent<Actor>().GetGridPosition().y));
+
+        foreach(GameObject o in occupants)
+        {
+            if(o != null && o.GetComponent<LaserSegment>() != null)
+            {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -374,6 +482,14 @@ public class GameGrid : MonoBehaviour
         return colliderReductionOffset;
     }
 
+    private void ConnectButtonsThroughWires()
+    {
+        foreach(GameObject o in buttons)
+        {
+            o.GetComponent<Button>().FindConnectedActors();
+        }
+    }
+
     /**
      * Sets the flag that will cause a LaserIOUpdate next physics frame.
      */
@@ -386,7 +502,7 @@ public class GameGrid : MonoBehaviour
      * Updates the paths that lasers take through the level, called the frame atfer the board state changes for any reason.
      * Additionally, calls CheckForWin to determine if the new state is a winning one.
      */
-    private void LaserIOUpdate()
+    public void LaserIOUpdate()
     {
         //Laser ins are reset to unlit...
         UpdateLaserIns();
@@ -425,18 +541,21 @@ public class GameGrid : MonoBehaviour
      */
     private void CheckForWin()
     {
-        int litGoals = 0;
-        foreach (GameObject o in laserIns)
+        if(!levelComplete)
         {
-            if (o.GetComponent<LaserIn>().GetIsLit())
+            int litGoals = 0;
+            foreach (GameObject o in laserIns)
             {
-                litGoals++;
+                if (o.GetComponent<LaserIn>().GetIsLit())
+                {
+                    litGoals++;
+                }
             }
-        }
-        if (litGoals == laserIns.Count)
-        {
-            //All goals are lit, the player has finished the level!
-            CompleteLevel();
+            if (litGoals == laserIns.Count)
+            {
+                //All goals are lit, the player has finished the level!
+                CompleteLevel();
+            }
         }
     }
 
@@ -445,7 +564,16 @@ public class GameGrid : MonoBehaviour
      */
     private void CompleteLevel()
     {
-        Debug.Log("Level Complete!");
+        StaticData.UnlockNextLevel();
+        player.GetComponent<Player>().SetCanMove(false);
+        GameObject ender = Instantiate(levelWinnerPrefab);
+        ender.transform.position = new Vector3(sceneCameraStatic.transform.position.x, sceneCameraStatic.transform.position.y, 0);
+        levelComplete = true;
+    }
+
+    public static void SetLevelComplete(bool val)
+    {
+        levelComplete = val;
     }
 
     public static char GetDelim(char specifier)
@@ -486,5 +614,26 @@ public class GameGrid : MonoBehaviour
     public Vector2Int GetGridArrayDims()
     {
         return new Vector2Int(gridArray.GetLength(1), gridArray.GetLength(0));
+    }
+
+    public void ResetLevel()
+    {
+        //Destroy all actors and lasers
+        for (int y = 0; y < gridArray.GetLength(0); y++)
+        {
+            for (int x = 0; x < gridArray.GetLength(1); x++)
+            {
+                foreach (GameObject o in gridArray[y, x].GetOccupants())
+                {
+                    if (o != null)
+                    {
+                        o.GetComponent<Actor>().SelfDestruct();
+                    }
+                }
+            }
+        }
+
+        GenerateLevelObjects();
+        startupStallFrame = true;
     }
 }
