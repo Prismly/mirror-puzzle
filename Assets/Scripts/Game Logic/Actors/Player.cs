@@ -17,6 +17,8 @@ public class Player : Actor
     private float inputTimerTotal = 0.15f;
     private float inputTimer = 0f;
 
+    private bool isAlive = true;
+
     /** The z coordinate tracks the total number of actors moved by the action. */
     private Stack<Vector3Int> moves = new Stack<Vector3Int>();
 
@@ -42,7 +44,7 @@ public class Player : Actor
         KeyCode[] keycodesInOrder = { leftMovement, rightMovement, upMovement, downMovement };
         Vector2Int[] dirsInOrder = { Vector2Int.left, Vector2Int.right, Vector2Int.up, Vector2Int.down };
 
-        if (gameGrid.GetLevelIsActive())
+        if (isAlive)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -72,36 +74,35 @@ public class Player : Actor
                     keyHeld = true;
                 }
             }
-
-            if (Input.GetKeyDown(undo))
-            {
-                UndoInput();
-            }
-            else if (Input.GetKey(undo))
-            {
-                //Key is being held...
-                if (inputTimer >= inputTimerTotal)
-                {
-                    //Undo anyway
-                    UndoInput();
-                    inputTimer = 0f;
-                }
-                else if (!keyHeld)
-                {
-                    inputTimer += Time.deltaTime;
-                }
-
-                keyHeld = true;
-            }
-
-            if (!keyHeld)
-            {
-                inputTimer = 0;
-            }
         }
 
-        //Badness
+        if (Input.GetKeyDown(undo))
+        {
+            UndoInput();
+        }
+        else if (Input.GetKey(undo))
+        {
+            //Key is being held...
+            if (inputTimer >= inputTimerTotal)
+            {
+                //Undo anyway
+                UndoInput();
+                inputTimer = 0f;
+            }
+            else if (!keyHeld)
+            {
+                inputTimer += Time.deltaTime;
+            }
 
+            keyHeld = true;
+        }
+
+        if (!keyHeld)
+        {
+            inputTimer = 0;
+        }
+
+        //Old badness
         /**if(gameGrid.GetLevelIsActive())
         {
             if (Input.GetKeyDown(leftMovement))
@@ -181,6 +182,11 @@ public class Player : Actor
     {
         if (moves.Count > 0)
         {
+            if (!isAlive)
+            {
+                SetIsAlive(true);
+            }
+
             Vector3Int previousMove = moves.Pop();
 
             if (previousMove.x > 0)
@@ -206,5 +212,12 @@ public class Player : Actor
             gameGrid.UndoMove(gridPosition, previousMove);
             gameGrid.QueueLaserIOUpdate();
         }
+    }
+
+    public void SetIsAlive(bool isAliveIn)
+    {
+        isAlive = isAliveIn;
+        GetComponent<SpriteRenderer>().enabled = isAliveIn;
+        GetComponent<BoxCollider2D>().enabled = isAliveIn;
     }
 }

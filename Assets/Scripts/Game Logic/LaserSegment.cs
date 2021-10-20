@@ -24,7 +24,7 @@ public class LaserSegment : MonoBehaviour
     {
         if(collider.gameObject.tag == "Player")
         {
-            Destroy(collider.gameObject);
+            collider.gameObject.GetComponent<Player>().SetIsAlive(false);
             outputTile.UpdateLasers();
         }
     }
