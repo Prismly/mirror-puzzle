@@ -33,6 +33,13 @@ public class LaserOut : Actor
     {
         //Get all colliders in the direction of the laser.
         RaycastHit2D[] hits = Physics2D.RaycastAll(origin, dir);
+
+        //foreach(RaycastHit2D h in hits)
+        //{
+        //    Debug.Log(h.collider.gameObject);
+        //    Debug.Log(h.point);
+        //}
+
         int hitsIndex = 0;
         if(ignoreStartingSquare)
         {
@@ -99,12 +106,12 @@ public class LaserOut : Actor
             if (dir.x == 0)
             {
                 //Laser is being fired vertically
-                newSegment.GetComponent<Animator>().SetBool("isHorizontal", false);
+                newSegment.GetComponent<LaserSegment>().SetIsVertical(true);
             }
             else
             {
                 //Laser is being fired horizontally
-                newSegment.GetComponent<Animator>().SetBool("isHorizontal", true);
+                newSegment.GetComponent<LaserSegment>().SetIsVertical(false);
             }
 
             newSegment.GetComponent<BoxCollider2D>().size = new Vector2(size.x - gameGrid.GetColliderReductionOffset(), size.y - gameGrid.GetColliderReductionOffset());

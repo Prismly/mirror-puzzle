@@ -183,7 +183,6 @@ public class Player : Actor
         {
             moves.Push(new Vector3Int(dir.x, dir.y, movedActorCount));
         }
-        gameGrid.QueueLaserIOUpdate();
     }
 
     private void UndoInput()
@@ -228,8 +227,8 @@ public class Player : Actor
             ender.transform.position = new Vector3(GameGrid.sceneCameraStatic.transform.position.x, GameGrid.sceneCameraStatic.transform.position.y, 0);
         }
         isAlive = isAliveIn;
-        GetComponent<SpriteRenderer>().enabled = isAliveIn;
-        GetComponent<BoxCollider2D>().enabled = isAliveIn;
+        //GetComponent<SpriteRenderer>().enabled = isAliveIn;
+        //GetComponent<BoxCollider2D>().enabled = isAliveIn;
     }
 
     public void SetCanMove(bool canMoveIn)

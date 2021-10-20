@@ -84,7 +84,7 @@ public class GameGrid : MonoBehaviour
      */
     public void FixedUpdate()
     {
-        if(startupStallFrame)
+        if (startupStallFrame)
         {
             //Stall for a single frame before executing the IO update function.
             //This is because colliders don't exist until the frame AFTER all the objects are generated. It's weird..
@@ -457,7 +457,7 @@ public class GameGrid : MonoBehaviour
      * Updates the paths that lasers take through the level, called the frame atfer the board state changes for any reason.
      * Additionally, calls CheckForWin to determine if the new state is a winning one.
      */
-    private void LaserIOUpdate()
+    public void LaserIOUpdate()
     {
         //Laser ins are reset to unlit...
         UpdateLaserIns();

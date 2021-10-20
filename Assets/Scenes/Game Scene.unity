@@ -336,6 +336,49 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1466511800
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1466511801}
+  - component: {fileID: 1466511802}
+  m_Layer: 0
+  m_Name: Laser Animation Syncer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1466511801
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466511800}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1466511802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466511800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe716492b636bd46a47a54198e51e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1674680785
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,7 +574,7 @@ PrefabInstance:
     - target: {fileID: 6238462936759224386, guid: 93851bb0ce9ceb545a5ca9c22645e2a1, type: 3}
       propertyPath: defaultLevelLayout
       value: 
-      objectReference: {fileID: 4900000, guid: 368ec86b412e49a48a3c659cb272803b, type: 3}
+      objectReference: {fileID: 4900000, guid: b925f535c89c56345bc94a98a62d8d53, type: 3}
     - target: {fileID: 6238462936759224386, guid: 93851bb0ce9ceb545a5ca9c22645e2a1, type: 3}
       propertyPath: colliderReductionOffset
       value: 0.1

@@ -86,7 +86,10 @@ public class Actor : MonoBehaviour
                 }
             }
 
+            Physics2D.SyncTransforms();
+            gameGrid.LaserIOUpdate();
             gameObject.GetComponent<BoxCollider2D>().offset = new Vector2(goalPosition.x - transform.position.x, -goalPosition.y - transform.position.y);
+            Physics2D.SyncTransforms();
         }
     }
 
@@ -196,6 +199,10 @@ public class Actor : MonoBehaviour
         if (updateTransformAndCollider)
         {
             gameObject.transform.position = new Vector3(newPos.x, -newPos.y);
+            if (gameGrid != null)
+            {
+                gameGrid.QueueLaserIOUpdate();
+            }
         }
 
         if (GetComponent<BoxCollider2D>() != null && moveBuffer.Count == 0)
