@@ -17,6 +17,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject advanceRightButton;
     [SerializeField] private GameObject resetButton;
 
+    private static KeyCode debugCode = KeyCode.Backslash;
+
     [SerializeField] private Tilemap bg1;
     [SerializeField] private Tilemap bg2;
     [SerializeField] private Sprite[] bgSprites;
@@ -24,6 +26,15 @@ public class MainMenuManager : MonoBehaviour
     public void Start()
     {
         StaticData.InitializeLevelArray(levels);
+        UpdateTextComponents();
+    }
+
+    public void Update()
+    {
+        if(Input.GetKeyDown(debugCode))
+        {
+            StaticData.UnlockAllLevels();
+        }
         UpdateTextComponents();
     }
 
@@ -64,6 +75,6 @@ public class MainMenuManager : MonoBehaviour
     private void UpdateTextComponents()
     {
         continueFromButton.GetComponentInChildren<Text>().text = "Continue From: " + StaticData.GetLevelSelected();
-        maxULText.GetComponent<Text>().text = "Current Level: " + StaticData.GetLevelSelected();
+        maxULText.GetComponent<Text>().text = "Current Level: " + StaticData.GetCurrentLevelUnlocked();
     }
 }

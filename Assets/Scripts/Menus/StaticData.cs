@@ -27,6 +27,11 @@ public static class StaticData
         }
     }
 
+    public static void UnlockAllLevels()
+    {
+        currentLevelUnlocked = levels.Length;
+    }
+
     public static void ProgressToNextLevel()
     {
         if (levelSelected + 1 >= levels.Length)
