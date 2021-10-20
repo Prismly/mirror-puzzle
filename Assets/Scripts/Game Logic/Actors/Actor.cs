@@ -85,11 +85,6 @@ public class Actor : MonoBehaviour
                     InstantActorPosUpdate(new Vector2Int((int)goalPosition.x, (int)goalPosition.y), true, false);
                 }
             }
-
-            Physics2D.SyncTransforms();
-            gameGrid.LaserIOUpdate();
-            gameObject.GetComponent<BoxCollider2D>().offset = new Vector2(goalPosition.x - transform.position.x, -goalPosition.y - transform.position.y);
-            Physics2D.SyncTransforms();
         }
     }
 
@@ -201,7 +196,7 @@ public class Actor : MonoBehaviour
             gameObject.transform.position = new Vector3(newPos.x, -newPos.y);
             if (gameGrid != null)
             {
-                gameGrid.QueueLaserIOUpdate();
+                //gameGrid.QueueLaserIOUpdate();
             }
         }
 

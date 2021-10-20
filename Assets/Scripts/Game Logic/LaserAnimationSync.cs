@@ -5,7 +5,7 @@ using UnityEngine;
 public class LaserAnimationSync : MonoBehaviour
 {
     private static float animationFrameIdx = 0;
-    private static float increment = 0.03f;
+    private static float increment = 0.01f;
 
     // Update is called once per frame
     void Update()

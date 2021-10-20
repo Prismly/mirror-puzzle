@@ -22,6 +22,8 @@ public class Player : Actor
     private bool isAlive = true;
     private bool canMove = true;
 
+    private bool stallingColliderMovement;
+
     /** The z coordinate tracks the total number of actors moved by the action. */
     private Stack<Vector3Int> moves = new Stack<Vector3Int>();
 
@@ -179,6 +181,8 @@ public class Player : Actor
     private void MovementInput(Vector2Int dir)
     {
         int movedActorCount = gameGrid.MoveActorInGrid(gridPosition, dir, false);
+        gameGrid.LaserIOUpdate();
+        SetIsAlive(!gameGrid.CheckZapped());
         if (movedActorCount > 0)
         {
             moves.Push(new Vector3Int(dir.x, dir.y, movedActorCount));
@@ -215,7 +219,7 @@ public class Player : Actor
             }
 
             gameGrid.UndoMove(gridPosition, previousMove);
-            gameGrid.QueueLaserIOUpdate();
+            gameGrid.LaserIOUpdate();
         }
     }
 
@@ -227,8 +231,8 @@ public class Player : Actor
             ender.transform.position = new Vector3(GameGrid.sceneCameraStatic.transform.position.x, GameGrid.sceneCameraStatic.transform.position.y, 0);
         }
         isAlive = isAliveIn;
-        //GetComponent<SpriteRenderer>().enabled = isAliveIn;
-        //GetComponent<BoxCollider2D>().enabled = isAliveIn;
+        GetComponent<SpriteRenderer>().enabled = isAliveIn;
+        GetComponent<BoxCollider2D>().enabled = isAliveIn;
     }
 
     public void SetCanMove(bool canMoveIn)

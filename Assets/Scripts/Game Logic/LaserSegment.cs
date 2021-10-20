@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserSegment : MonoBehaviour
+public class LaserSegment : Actor
 {
     /** The laser output actor that spawned this laser segment. */
     private LaserOut outputTile;
@@ -14,9 +14,10 @@ public class LaserSegment : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().sprite = animationFrames[LaserAnimationSync.GetAnimFrame(isVertical)];
     }
 
-    public void Update()
+    public override void Update()
     {
         gameObject.GetComponent<SpriteRenderer>().sprite = animationFrames[LaserAnimationSync.GetAnimFrame(isVertical)];
+        base.Update();
     }
 
     /**
@@ -33,21 +34,16 @@ public class LaserSegment : MonoBehaviour
         isVertical = newVal;
     }
 
-    /**
-     * Runs whenever something gets in the way of this laser segment. 
-     * @param collider - the collider we've collided with.
-     */
-    public void OnTriggerEnter2D(Collider2D collider)
-    {
-        if(collider.gameObject.tag == "Player")
-        {
-            //Debug.Log(collider.transform.position + (Vector3)collider.gameObject.GetComponent<BoxCollider2D>().offset);
-            //Debug.Log(collider.gameObject.GetComponent<BoxCollider2D>().size);
-            //Debug.Log(transform.position + (Vector3)gameObject.GetComponent<BoxCollider2D>().offset);
-            //Debug.Log(gameObject.GetComponent<BoxCollider2D>().size);
-            Debug.Log(StackTraceUtility.ExtractStackTrace());
-            collider.gameObject.GetComponent<Player>().SetIsAlive(false);
-            outputTile.UpdateLasers();
-        }
-    }
+    ///**
+    // * Runs whenever something gets in the way of this laser segment. 
+    // * @param collider - the collider we've collided with.
+    // */
+    //public void OnTriggerEnter2D(Collider2D collider)
+    //{
+    //    if(collider.gameObject.tag == "Player")
+    //    {
+    //        collider.gameObject.GetComponent<Player>().SetIsAlive(false);
+    //        outputTile.UpdateLasers();
+    //    }
+    //}
 }

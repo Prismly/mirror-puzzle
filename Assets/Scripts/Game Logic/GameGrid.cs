@@ -77,6 +77,11 @@ public class GameGrid : MonoBehaviour
                 ResetLevel();
             }
         }
+
+        foreach(GridSquare s in gridArray)
+        {
+            s.CleanOccupantsList();
+        }
     }
 
     /**
@@ -93,7 +98,6 @@ public class GameGrid : MonoBehaviour
         }
         else if(boardStateChanged)
         {
-            Physics2D.SyncTransforms();
             LaserIOUpdate();
             //We don't need to call LaserIOUpdate() every frame, only when the board state changes.
             boardStateChanged = false;
@@ -261,6 +265,18 @@ public class GameGrid : MonoBehaviour
             }
         }
 
+        public void CleanOccupantsList()
+        {
+            for(int i = 0; i < occupants.Count; i++)
+            {
+                if(occupants[i] == null)
+                {
+                    occupants.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
         /**
          * Returns the Actor GameObject located at the given index in the occupants list.
          * @param index - the index of the Actor GameObject to return.
@@ -289,7 +305,7 @@ public class GameGrid : MonoBehaviour
         {
             for(int i = 0; i < occupants.Count; i++)
             {
-                if(occupants[i].GetComponent<Actor>().GetIsMovable())
+                if(occupants[i] != null && occupants[i].GetComponent<Actor>().GetIsMovable())
                 {
                     return i;
                 }
@@ -305,7 +321,7 @@ public class GameGrid : MonoBehaviour
         {
             for(int i = 0; i < occupants.Count; i++)
             {
-                if (occupants[i].GetComponent<Actor>().GetIsStop())
+                if (occupants[i] != null && occupants[i].GetComponent<Actor>().GetIsStop())
                 {
                     return i;
                 }
@@ -320,6 +336,11 @@ public class GameGrid : MonoBehaviour
         public void AddOccupant(GameObject newOccupant)
         {
             occupants.Add(newOccupant);
+        }
+
+        public void RemoveOccupant(GameObject occupant)
+        {
+            occupants.Remove(occupant);
         }
 
         /**
@@ -339,6 +360,16 @@ public class GameGrid : MonoBehaviour
             movingActor.GetComponent<Actor>().SlowActorPosUpdate(gridPosition, dir);
             movingActor.GetComponent<Actor>().InstantActorPosUpdate(squareToGiveTo.gridPosition, false, true);
         }
+    }
+
+    public void AddActorToGridSquare(GameObject actor, Vector2Int targetPos)
+    {
+        gridArray[targetPos.y, targetPos.x].AddOccupant(actor);
+    }
+
+    public void RemoveActorFromGridSquare(GameObject actor, Vector2Int targetPos)
+    {
+        gridArray[targetPos.y, targetPos.x].RemoveOccupant(actor);
     }
 
     /**
@@ -399,6 +430,20 @@ public class GameGrid : MonoBehaviour
         }
 
         MoveActorInGrid(farthestPushedPos, oppDir, false);
+    }
+
+    public bool CheckZapped()
+    {
+        List<GameObject> occupants = GetGridSquareOccupants(new Vector2Int(player.GetComponent<Actor>().GetGridPosition().x, player.GetComponent<Actor>().GetGridPosition().y));
+
+        foreach(GameObject o in occupants)
+        {
+            if(o != null && o.GetComponent<LaserSegment>() != null)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3272308588776056489}
   - component: {fileID: 7134122541279518144}
   - component: {fileID: 2072537106522283700}
-  - component: {fileID: 8756684433989617154}
+  - component: {fileID: -854036301441682635}
   m_Layer: 0
   m_Name: Mirror Corner
   m_TagString: Mirror
@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b664398991a9ed42957169ff1a99890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftSprite: {fileID: 21300000, guid: c56b21c4e83e4a64480ab0dbf5dd6282, type: 3}
-  rightSprite: {fileID: 21300000, guid: 73216d541e2695744b35d4945b5a9960, type: 3}
-  upSprite: {fileID: 21300000, guid: dcf300b5d9d5ccf4c9cea39ccb322d1a, type: 3}
-  downSprite: {fileID: 21300000, guid: 8c32d1953b8b3d84094c60418a654202, type: 3}
+  leftSprite: {fileID: 21300000, guid: 0691d57caefcaf84d9ab31ece98c431d, type: 3}
+  rightSprite: {fileID: 21300000, guid: f5aa9459b47059543bf387fa7e4fa24c, type: 3}
+  upSprite: {fileID: 21300000, guid: 853c6772f5778b04b9264a92467d6792, type: 3}
+  downSprite: {fileID: 21300000, guid: 7485932def4502f43b041f6944d23387, type: 3}
   isMovable: 1
   isStop: 0
 --- !u!212 &2072537106522283700
@@ -89,20 +89,20 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 100502939
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c56b21c4e83e4a64480ab0dbf5dd6282, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0691d57caefcaf84d9ab31ece98c431d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &8756684433989617154
+--- !u!61 &-854036301441682635
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,7 +120,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
-    newSize: {x: 0.16, y: 0.16}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
