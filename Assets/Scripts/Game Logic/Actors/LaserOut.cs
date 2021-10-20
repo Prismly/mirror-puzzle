@@ -14,6 +14,8 @@ public class LaserOut : Actor
     /** The sprite for a horizontal laser segment. */
     [SerializeField] private Sprite laserHorizontal;
 
+    private float laserSegmentStartpointOffset = 0.25f;
+
     private bool isOn = true;
 
     /**
@@ -25,7 +27,7 @@ public class LaserOut : Actor
      * @param dir - the direction in which to fire the laser.
      * @param ignoreStartingSquare - whether or not to take into account colliders on the same GridSquare as origin.
      */
-    private void FireLaser(Vector2Int origin, Vector2 dir, bool ignoreStartingSquare)
+    private void FireLaser(Vector2 origin, Vector2 dir, bool ignoreStartingSquare)
     {
         //Get all colliders in the direction of the laser.
         RaycastHit2D[] hits = Physics2D.RaycastAll(origin, dir);
@@ -42,7 +44,7 @@ public class LaserOut : Actor
             {
                 if (hits[i].collider.gameObject.GetComponent<Actor>())
                 {
-                    Vector2Int currentHitPosition = new Vector2Int(hits[i].collider.gameObject.GetComponent<Actor>().GetGridPosition().x,
+                    Vector2 currentHitPosition = new Vector2(hits[i].collider.gameObject.GetComponent<Actor>().GetGridPosition().x,
                     -hits[i].collider.gameObject.GetComponent<Actor>().GetGridPosition().y);
 
                     if (!currentHitPosition.Equals(origin) && (hits[i].collider.gameObject.GetComponent<Actor>().GetIsStop() ||
@@ -85,7 +87,7 @@ public class LaserOut : Actor
 
             Vector2 dirAbs = new Vector2(Mathf.Abs(dir.x), Mathf.Abs(dir.y));
             //Results in a vector that has a zero dimension and a non-zero dimension, representing the length of the laser.
-            Vector2 size = dirAbs * (hit.distance + 0.5f - gameGrid.GetColliderReductionOffset());
+            Vector2 size = dirAbs * (hit.distance - gameGrid.GetColliderReductionOffset() + 0.5f);
             //Corrects for whichever dimension is of length 0, resulting in the correct size of the sprite and collider.
             size = size + Vector2.one - dirAbs;
 
@@ -104,7 +106,7 @@ public class LaserOut : Actor
             newSegment.GetComponent<BoxCollider2D>().size = new Vector2(size.x - gameGrid.GetColliderReductionOffset(), size.y - gameGrid.GetColliderReductionOffset());
 
             Vector3 oldPos = new Vector3(origin.x, origin.y, 0);
-            Vector3 offset = new Vector3(dir.x * ((hit.distance - 0.5f) / 2), dir.y * ((hit.distance - 0.5f) / 2), 0);
+            Vector3 offset = new Vector3(dir.x * Mathf.Abs(hit.transform.position.x - origin.x) / 2, dir.y * Mathf.Abs(hit.transform.position.y - origin.y) / 2);
 
             newSegment.transform.position = oldPos + offset;
 
@@ -116,7 +118,7 @@ public class LaserOut : Actor
             {
                 //If the laser should be redirected from its collision with a mirror...
 
-                Vector2Int newOrigin = new Vector2Int(hit.collider.gameObject.GetComponent<Actor>().GetGridPosition().x,
+                Vector2 newOrigin = new Vector2(hit.collider.gameObject.GetComponent<Actor>().GetGridPosition().x,
                     -hit.collider.gameObject.GetComponent<Actor>().GetGridPosition().y);
 
                 //...fire the laser again, this time starting from the mirror and in the new direction.
@@ -226,7 +228,8 @@ public class LaserOut : Actor
 
         if (isOn)
         {
-            FireLaser(new Vector2Int(gridPosition.x, -gridPosition.y), facing, false);
+            Vector2 startOffset = new Vector2(facing.x * -laserSegmentStartpointOffset, facing.y * -laserSegmentStartpointOffset);
+            FireLaser(new Vector2(gridPosition.x, -gridPosition.y) + startOffset, facing, false);
         }
     }
 
