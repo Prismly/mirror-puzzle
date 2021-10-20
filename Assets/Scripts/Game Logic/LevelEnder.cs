@@ -11,7 +11,6 @@ public class LevelEnder : MonoBehaviour
     {
         if(isWin && Input.GetKeyDown(continueToNextLevel))
         {
-            StaticData.UnlockNextLevel();
             StaticData.ProgressToNextLevel();
         }
         else if(Input.GetKeyDown(Player.undo))

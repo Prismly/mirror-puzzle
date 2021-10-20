@@ -57,6 +57,7 @@ public class GameGrid : MonoBehaviour
      */
     public void Start()
     {
+        InitializeStatics();
         GenerateLevelObjects();
         levelIsActive = true;
 
@@ -96,6 +97,11 @@ public class GameGrid : MonoBehaviour
             //We don't need to call LaserIOUpdate() every frame, only when the board state changes.
             boardStateChanged = false;
         }
+    }
+
+    private void InitializeStatics()
+    {
+        levelComplete = false;
     }
 
     /**
@@ -510,6 +516,7 @@ public class GameGrid : MonoBehaviour
      */
     private void CompleteLevel()
     {
+        StaticData.UnlockNextLevel();
         player.GetComponent<Player>().SetCanMove(false);
         GameObject ender = Instantiate(levelEnderPrefab);
         ender.transform.position = new Vector3(sceneCamera.transform.position.x, sceneCamera.transform.position.y, 0);

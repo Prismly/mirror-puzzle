@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : Actor
 {
@@ -13,6 +14,7 @@ public class Player : Actor
     /** The keyboard key corresponding to the command to move the player character DOWN by one square. */
     public static KeyCode downMovement = KeyCode.DownArrow;
     public static KeyCode undo = KeyCode.Z;
+    public static KeyCode toMainMenu = KeyCode.Escape;
 
     private float inputTimerTotal = 0.15f;
     private float inputTimer = 0f;
@@ -39,6 +41,11 @@ public class Player : Actor
      */
     private void playerInput()
     {
+        if(Input.GetKeyDown(toMainMenu))
+        {
+            SceneManager.LoadScene("Title Screen");
+        }
+
         bool keyHeld = false;
         Sprite[] spritesInOrder = { leftSprite, rightSprite, upSprite, downSprite };
         char[] charsInOrder = { 'L', 'R', 'U', 'D' };
