@@ -504,10 +504,9 @@ public class GameGrid : MonoBehaviour
      */
     public void LaserIOUpdate()
     {
-        //Laser ins are reset to unlit...
-        UpdateLaserIns();
-        //Laser outs fire lasers and, if they still point to the laser ins, those revert to lit...
         UpdateLaserOuts();
+
+        UpdateLaserIns();
         //Check if, as a result if this most recent move, the board is in a winning state...
         CheckForWin();
     }
@@ -532,7 +531,18 @@ public class GameGrid : MonoBehaviour
         //Reset all ins for the next turn.
         foreach (GameObject o in laserIns)
         {
+            Vector2Int target = new Vector2Int(o.GetComponent<Actor>().GetGridPosition().x, o.GetComponent<Actor>().GetGridPosition().y);
+            target += new Vector2Int(o.GetComponent<Actor>().GetFacing().x, -o.GetComponent<Actor>().GetFacing().y);
+            List<GameObject> occupants = GetGridSquareOccupants(target);
             o.GetComponent<LaserIn>().SetIsLit(false);
+
+            foreach (GameObject occ in occupants)
+            {
+                if(occ != null && occ.GetComponent<LaserSegment>() != null)
+                {
+                    o.GetComponent<LaserIn>().SetIsLit(true);
+                }
+            }
         }
     }
 

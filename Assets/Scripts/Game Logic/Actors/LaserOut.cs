@@ -41,6 +41,8 @@ public class LaserOut : Actor
                 FireLaser(currentPos, newDir, true);
             }
         }
+
+        List<GameObject> occupants = gameGrid.GetGridSquareOccupants(currentPos);
     }
 
     private Vector2Int GenerateSegment(Vector2Int currentPos, Vector2Int dir)

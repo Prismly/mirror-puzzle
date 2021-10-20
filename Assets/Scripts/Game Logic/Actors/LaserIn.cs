@@ -7,6 +7,8 @@ public class LaserIn : Actor
     /** Flag specifying whether this laser input currently has a laser pointed at it. */
     private bool isLit = false;
 
+    private List<GameObject> connectedTo = new List<GameObject>();
+
     /** The sprite for a left-facing, lit laser input. */
     [SerializeField] protected Sprite leftLitSprite;
     /** The sprite for a right-facing, lit laser input. */
@@ -32,6 +34,7 @@ public class LaserIn : Actor
     public void SetIsLit(bool isLitIn)
     {
         isLit = isLitIn;
+
         UpdateSprite();
     }
 

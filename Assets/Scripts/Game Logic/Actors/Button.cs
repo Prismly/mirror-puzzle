@@ -78,5 +78,7 @@ public class Button : Actor
                 o.GetComponent<Actor>().PerformButtonAction();
             }
         }
+
+        gameGrid.LaserIOUpdate();
     }
 }
