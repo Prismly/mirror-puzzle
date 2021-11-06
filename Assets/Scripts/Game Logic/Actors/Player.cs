@@ -45,6 +45,7 @@ public class Player : Actor
     {
         if(Input.GetKeyDown(toMainMenu))
         {
+            SoundManager.PlaySound("click");
             SceneManager.LoadScene("Title Screen");
         }
 
@@ -61,6 +62,7 @@ public class Player : Actor
                 if (Input.GetKeyDown(keycodesInOrder[i]))
                 {
                     //Key has just been pressed...
+                    SoundManager.PlaySound("move");
                     gameObject.GetComponent<SpriteRenderer>().sprite = spritesInOrder[i];
                     base.SetFacing(charsInOrder[i]);
                     MovementInput(dirsInOrder[i]);
@@ -71,6 +73,7 @@ public class Player : Actor
                     if (inputTimer >= inputTimerTotal)
                     {
                         //Move anyway
+                        SoundManager.PlaySound("move");
                         gameObject.GetComponent<SpriteRenderer>().sprite = spritesInOrder[i];
                         base.SetFacing(charsInOrder[i]);
                         MovementInput(dirsInOrder[i]);
@@ -88,6 +91,7 @@ public class Player : Actor
 
         if (Input.GetKeyDown(undo))
         {
+            SoundManager.PlaySound("move");
             UndoInput();
         }
         else if (Input.GetKey(undo))
@@ -96,6 +100,7 @@ public class Player : Actor
             if (inputTimer >= inputTimerTotal)
             {
                 //Undo anyway
+                SoundManager.PlaySound("move");
                 UndoInput();
                 inputTimer = 0f;
             }

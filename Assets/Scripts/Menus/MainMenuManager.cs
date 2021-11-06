@@ -40,6 +40,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void ResetProgress()
     {
+        SoundManager.PlaySound("click");
         StaticData.SetLevelSelected(1);
         StaticData.SetCurrentLevelUnlocked(1);
         UpdateTextComponents();
@@ -56,19 +57,21 @@ public class MainMenuManager : MonoBehaviour
         {
             result = StaticData.GetCurrentLevelUnlocked();
         }
-
+        SoundManager.PlaySound("click");
         StaticData.SetLevelSelected(result);
         
     }
 
     public void LoadLevel(int levelNum)
     {
+        SoundManager.PlaySound("click");
         GameGrid.SetLayout(StaticData.LayoutFromLevelNumber(levelNum));
         SceneManager.LoadScene(gameplaySceneName);
     }
 
     public void LoadSelectedLevel()
     {
+        SoundManager.PlaySound("click");
         LoadLevel(StaticData.GetLevelSelected());
     }
 

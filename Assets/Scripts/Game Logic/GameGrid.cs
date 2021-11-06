@@ -574,6 +574,7 @@ public class GameGrid : MonoBehaviour
      */
     private void CompleteLevel()
     {
+        SoundManager.PlaySound("win");
         StaticData.UnlockNextLevel();
         player.GetComponent<Player>().SetCanMove(false);
         GameObject ender = Instantiate(levelWinnerPrefab);
